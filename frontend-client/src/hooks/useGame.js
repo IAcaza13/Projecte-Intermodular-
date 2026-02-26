@@ -15,7 +15,7 @@ export const useGame = (gameId) => {
             setBoard(newBoard);
 
             // Reproducir sonido 
-            const audio = new Audio(`/assets/sounds/${data.hit ? 'hit.mp3' : 'miss.mp3'}`);
+            const audio = new Audio(`/assets/sounds/${data.hit ? 'hitprueba.mp3' : 'miss.mp3'}`);
             audio.play();
 
             if (data.hit) setMessage(`¡Rescatado un trozo de ${data.ship_found}!`);

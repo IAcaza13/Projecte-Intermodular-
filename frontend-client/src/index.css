@@ -66,3 +66,95 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Animaciones personalizadas para el juego */
+
+@keyframes bounce-once {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce-once {
+  animation: bounce-once 0.5s ease-in-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ship-sink {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(-10deg) translateY(10px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(10deg) translateY(30px);
+    opacity: 0;
+  }
+}
+
+.animate-ship-sink {
+  animation: ship-sink 1s ease-in forwards;
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar {
+  animation: radar-sweep 3s linear infinite;
+}
+
+/* Efecto de agua al fallar */
+.water-splash {
+  position: relative;
+  overflow: hidden;
+}
+
+.water-splash::after {
+  content: '💧';
+  position: absolute;
+  animation: ripple 0.5s ease-out;
+}
+
+/* Mejoras para el tablero */
+.board-cell {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.board-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Fondo de coordenadas para el tablero */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
