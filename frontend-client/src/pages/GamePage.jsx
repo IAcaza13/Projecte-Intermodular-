@@ -3,6 +3,7 @@ import { Board } from '../components/Board/Board';
 import { useGame } from '../hooks/useGame';
 import api from '../api/axiosConfig';
 
+
 const GamePage = () => {
     const [gameId, setGameId] = useState(null);
     const { board, shoot, message } = useGame(gameId);
@@ -36,3 +37,5 @@ const GamePage = () => {
         </div>
     );
 };
+
+export default GamePage;
