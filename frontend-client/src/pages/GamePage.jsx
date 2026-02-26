@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Link } from 'react';
 import { Board } from '../components/Board/Board';
 import { useGame } from '../hooks/useGame';
 import api from '../api/axiosConfig';
@@ -15,7 +15,6 @@ const GamePage = () => {
 
     return (
         <div className="p-4 flex flex-col items-center gap-6">
-            <h1 className="text-2xl font-bold">Fleet Rescue</h1>
             
             {!gameId ? (
                 <button 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Link } from 'react';
 import api from '../api/axiosConfig';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -21,8 +21,11 @@ const RankingPage = () => {
     useEffect(() => {
         const fetchRankings = async () => {
             try {
-                const { data } = await api.get('/ranking');
+                const { data } = await api.get('/rankings');
                 setRankings(data);
+                if (data.length === 0) {
+                    alert("Aún no hay jugadores en el ranking. ¡Sé el primero en jugar!");
+                }
             } catch (error) {
                 console.error("Error al cargar el ranking", error);
             } finally {
@@ -51,7 +54,7 @@ const RankingPage = () => {
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 shadow-xl rounded-lg">
             <h1 className="text-3xl font-bold text-center mb-8">🏆 Hall de la Fama - Fleet Rescue</h1>
-
+    
             {/* Gráfico de rendimiento */}
             <div className="mb-10 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                 <Bar data={chartData} options={{ responsive: true, plugins: { title: { display: true, text: 'Top 10 Jugadores (Menos intentos)' } } }} />

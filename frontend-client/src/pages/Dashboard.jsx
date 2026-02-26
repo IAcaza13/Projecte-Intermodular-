@@ -27,19 +27,23 @@ const Dashboard = () => {
                     <Play className="w-12 h-12 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
                     <span className="mt-4 font-bold text-lg">Nueva Partida</span>
                 </Link>
-
+                <br />
                 {/* Botón Ranking */}
                 <Link to="/ranking" className="flex flex-col items-center p-6 bg-yellow-50 dark:bg-yellow-900/30 rounded-xl hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-all group">
                     <Trophy className="w-12 h-12 text-yellow-600 dark:text-yellow-400 group-hover:scale-110 transition-transform" />
                     <span className="mt-4 font-bold text-lg">Ver Ranking</span>
                 </Link>
+                <br />
 
-                {/* Botón Perfil / Historial (Opcional) */}
-                <div className="flex flex-col items-center p-6 bg-green-50 dark:bg-green-900/30 rounded-xl opacity-80">
-                    <Ship className="w-12 h-12 text-green-600 dark:text-green-400" />
-                    <span className="mt-4 font-bold text-lg">Mi Flota</span>
-                </div>
-
+                {/* Botón Perfil / Historial */}
+                <Link 
+    to="/profile" 
+    className="flex flex-col items-center p-6 bg-green-50 dark:bg-green-900/30 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/50 transition-all group border border-green-100 dark:border-green-800"
+>
+    <Ship className="w-12 h-12 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform" />
+    <span className="mt-4 font-bold text-lg">Mi Flota / Perfil</span>
+</Link>
+<br />
                 {/* Botón Logout */}
                 <button 
                     onClick={handleLogout}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RegisterForm } from './components/Auth/RegisterForm';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -8,6 +8,7 @@ import  RankingPage  from './pages/RankingPage';
 import { LoginForm } from './components/Auth/LoginForm';
 import Dashboard from './pages/Dashboard';
 import { Anchor } from 'lucide-react'; // Importamos un icono temático
+import ProfilePage from './pages/ProfilePage';
 
 // Componente de Ruta Privada corregido
 const PrivateRoute = ({ children }) => {
@@ -41,6 +42,11 @@ function App() {
                                 <div className="h-full bg-blue-500 animate-[pulse_2s_infinite] w-full"></div>
                             </div>
                             <ThemeToggle />
+                            <Link 
+        to="/dashboard" 
+        className="flex items-center gap-2 group relative" 
+        aria-label="Volver al dashboard"
+    > Volver al inicio </Link>
                         </div>
                     </nav>
 
@@ -59,6 +65,7 @@ function App() {
                                 <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>} />
                                 <Route path="/game" element={<PrivateRoute> <GamePage /> </PrivateRoute>} />
                                 <Route path="/ranking" element={< PrivateRoute><RankingPage /></PrivateRoute>} />
+                                <Route path="/profile" element={< PrivateRoute><ProfilePage /></PrivateRoute>} />
                                 
                                 <Route path="/" element={<PrivateRoute> <Navigate to="/dashboard" /> </PrivateRoute>} />
                                 
