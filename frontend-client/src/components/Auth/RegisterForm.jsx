@@ -1,19 +1,27 @@
 import { useState } from 'react';
 import api from '../../api/axiosConfig';
+import { redirect } from 'react-router-dom';
 
 export const RegisterForm = () => {
     const [formData, setFormData] = useState({ username: '', email: '', password: '' });
     const [errors, setErrors] = useState({});
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await api.post('/register', formData);
-            alert("Registro completado. Ahora puedes iniciar sesión.");
-        } catch (err) {
-            setErrors(err.response.data); // Muestra errores de validación de Laravel [cite: 65]
+    e.preventDefault();
+    setErrors({}); // Limpiar errores previos
+    try {
+        await api.post('/register', formData);
+        alert("¡Registro éxito! Ahora loguéate.");
+        redirect('/login'); // Redirigir al login tras registrarse
+    } catch (err) {
+        if (err.response && err.response.status === 400) {
+            // Guardamos los errores que envía Laravel (email, password, etc)
+            setErrors(err.response.data.errors || err.response.data);
+        } else {
+            console.error("Error inesperado", err);
         }
-    };
+    }
+};
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 border rounded">
