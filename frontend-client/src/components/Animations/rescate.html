@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Rescate Submarino Automático</title>
+<style>
+  :root {
+    --mar-profundo: #05192d;
+    --mar-superficie: #4d96ff;
+    --oxido: #5a4610;
+  }
+
+  body {
+    background: linear-gradient(to bottom, var(--mar-superficie), var(--mar-profundo));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  /* El Barco: ahora empieza con un filtro de "oxidado" */
+  .barco {
+    font-size: 80px;
+    position: relative;
+    z-index: 1;
+    filter: sepia(0.8) hue-rotate(340deg) brightness(0.6);
+    transform: translateY(150px) rotate(15deg);
+    /* Animación de subida automática vinculada a la clase 'rescatando' */
+    transition: all 5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* La Grúa/Cable */
+  .grua {
+    position: absolute;
+    top: -400px;
+    width: 2px;
+    height: 450px;
+    background: rgba(255,255,255,0.4);
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    z-index: 2;
+    transition: top 3s ease-in-out;
+  }
+
+  /* Gancho de rescate */
+  .grua::after {
+    content: '⚓';
+    position: absolute;
+    bottom: -25px;
+    left: -18px;
+    font-size: 30px;
+    filter: grayscale(1) brightness(0.5);
+  }
+
+  /* Estados de la animación automática */
+  .fase-descenso .grua {
+    top: 50px;
+  }
+
+  .fase-ascenso .grua {
+    top: -400px;
+  }
+
+  .fase-ascenso .barco {
+    transform: translateY(-500px) rotate(-5deg) scale(0.7);
+    filter: sepia(0) hue-rotate(0deg) brightness(1); /* Recupera color al subir */
+    opacity: 0.5;
+  }
+
+  /* Burbujas */
+  .burbuja {
+    position: absolute;
+    bottom: -20px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    animation: flotar 4s linear infinite;
+  }
+
+  @keyframes flotar {
+    to { transform: translateY(-110vh); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="grua"></div>
+  <div class="barco">🚢</div>
+
+  <script>
+    window.onload = () => {
+      const body = document.body;
+
+      // Secuencia automática
+      // 1. Baja el gancho (a los 1.5 segundos de cargar)
+      setTimeout(() => {
+        body.classList.add('fase-descenso');
+        generarBurbujas(30);
+      }, 500);
+
+      // 2. Sube el barco con el gancho (a los 4.5 segundos)
+      setTimeout(() => {
+        body.classList.remove('fase-descenso');
+        body.classList.add('fase-ascenso');
+      }, 4500);
+    };
+
+    function generarBurbujas(cantidad) {
+      for(let i=0; i < cantidad; i++) {
+        const b = document.createElement('div');
+        b.className = 'burbuja';
+        const size = Math.random() * 8 + 4 + 'px';
+        b.style.width = size;
+        b.style.height = size;
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        b.style.animationDelay = (Math.random() * 5) + 's';
+        document.body.appendChild(b);
+      }
+    }
+  </script>
+
+</body>
+</html>
