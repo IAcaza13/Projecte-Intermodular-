@@ -3,7 +3,6 @@ import { Ship } from '../ships/ShipSVG';
 
 export const Board = ({ board, onCellClick, ships = [] }) => {
     const [animationClass, setAnimationClass] = React.useState(null);
-    const [animatingCell, setAnimatingCell] = React.useState(null);
 
     const handleClick = (x, y) => {
         if (!board[y][x]) {

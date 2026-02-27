@@ -1,174 +1,88 @@
 import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 
-// Barco de 1 casilla (pequeño)
-export const SmallShip = ({ className = "", orientation = "horizontal" }) => {
+// Estilo común para todos los barcos: Bicolor y reacciona al tema
+const getShipColors = (isDark) => ({
+    fill: isDark ? "#FFFFFF" : "#000000", // Blanco en dark, Negro en light
+    stroke: isDark ? "#9CA3AF" : "#4B5563"
+});
+
+// Destroyer - 2 Casillas (Inspirado en la silueta de la imagen)
+export const Destroyer = ({ className = "", orientation = "horizontal" }) => {
     const { theme } = useTheme();
-    const isDark = theme === 'dark';
-    
+    const colors = getShipColors(theme === 'dark');
+    const rotation = orientation === "vertical" ? "rotate(90 20 20)" : "";
+
     return (
-        <svg 
-            className={`w-full h-full ${className}`}
-            viewBox="0 0 40 40" 
-            fill="none" 
-            xmlns="http://w3.org/2000/svg"
-        >
-            {/* Casco del barco */}
-            <rect 
-                x="5" y="15" 
-                width="30" height="20" 
-                rx="4" 
-                fill={isDark ? "#4B5563" : "#6B7280"} 
-                stroke={isDark ? "#9CA3AF" : "#4B5563"} 
-                strokeWidth="2"
-            />
-            {/* Cubierta */}
-            <rect 
-                x="10" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            {/* Chimenea */}
-            <circle 
-                cx="20" cy="8" 
-                r="4" 
-                fill={isDark ? "#EF4444" : "#DC2626"} 
-            />
+        <svg className={`w-full h-full ${className}`} viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform={rotation}>
+                <path d="M5 25 L10 20 L70 20 L75 25 L70 30 L10 30 Z" fill={colors.fill} />
+                <rect x="25" y="12" width="20" height="8" fill={colors.fill} />
+                <rect x="30" y="7" width="10" height="5" fill={colors.fill} />
+            </g>
         </svg>
     );
 };
 
-// Barco de 2 casillas (mediano)
-export const MediumShip = ({ className = "", orientation = "horizontal" }) => {
+// Submarine/Cruiser - 3 Casillas
+export const Cruiser = ({ className = "", orientation = "horizontal" }) => {
     const { theme } = useTheme();
-    const isDark = theme === 'dark';
-    
-    const rotation = orientation === "vertical" ? "rotate(90)" : "";
-    
+    const colors = getShipColors(theme === 'dark');
+    const rotation = orientation === "vertical" ? "rotate(90 60 20)" : "";
+
     return (
-        <svg 
-            className={`w-full h-full ${className}`}
-            viewBox="0 0 80 40" 
-            fill="none" 
-            xmlns="http://w3.org/2000/svg"
-            transform={rotation}
-        >
-            {/* Casco del barco (más largo) */}
-            <rect 
-                x="5" y="15" 
-                width="70" height="20" 
-                rx="4" 
-                fill={isDark ? "#4B5563" : "#6B7280"} 
-                stroke={isDark ? "#9CA3AF" : "#4B5563"} 
-                strokeWidth="2"
-            />
-            {/* Cubierta con dos secciones */}
-            <rect 
-                x="15" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            <rect 
-                x="45" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            {/* Dos chimeneas */}
-            <circle 
-                cx="25" cy="8" 
-                r="4" 
-                fill={isDark ? "#EF4444" : "#DC2626"} 
-            />
-            <circle 
-                cx="55" cy="8" 
-                r="4" 
-                fill={isDark ? "#F59E0B" : "#D97706"} 
-            />
+        <svg className={`w-full h-full ${className}`} viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform={rotation}>
+                <path d="M5 25 C 5 25, 10 18, 20 18 L100 18 C 110 18, 115 25, 115 25 L105 32 L15 32 Z" fill={colors.fill} />
+                <rect x="40" y="10" width="30" height="8" fill={colors.fill} />
+                <circle cx="55" cy="7" r="3" fill={colors.fill} />
+            </g>
         </svg>
     );
 };
 
-// Barco de 3 casillas (grande)
-export const LargeShip = ({ className = "", orientation = "horizontal" }) => {
+// Battleship - 4 Casillas
+export const Battleship = ({ className = "", orientation = "horizontal" }) => {
     const { theme } = useTheme();
-    const isDark = theme === 'dark';
-    
-    const rotation = orientation === "vertical" ? "rotate(90)" : "";
-    
+    const colors = getShipColors(theme === 'dark');
+    const rotation = orientation === "vertical" ? "rotate(90 80 20)" : "";
+
     return (
-        <svg 
-            className={`w-full h-full ${className}`}
-            viewBox="0 0 120 40" 
-            fill="none" 
-            xmlns="http://w3.org/2000/svg"
-            transform={rotation}
-        >
-            {/* Casco del barco */}
-            <rect 
-                x="5" y="15" 
-                width="110" height="20" 
-                rx="4" 
-                fill={isDark ? "#4B5563" : "#6B7280"} 
-                stroke={isDark ? "#9CA3AF" : "#4B5563"} 
-                strokeWidth="2"
-            />
-            {/* Cubierta con tres secciones */}
-            <rect 
-                x="15" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            <rect 
-                x="45" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            <rect 
-                x="75" y="10" 
-                width="20" height="10" 
-                fill={isDark ? "#374151" : "#9CA3AF"} 
-            />
-            {/* Tres chimeneas */}
-            <circle 
-                cx="25" cy="8" 
-                r="4" 
-                fill={isDark ? "#EF4444" : "#DC2626"} 
-            />
-            <circle 
-                cx="55" cy="8" 
-                r="4" 
-                fill={isDark ? "#F59E0B" : "#D97706"} 
-            />
-            <circle 
-                cx="85" cy="8" 
-                r="4" 
-                fill={isDark ? "#10B981" : "#059669"} 
-            />
-            {/* Mástil con bandera */}
-            <line 
-                x1="95" y1="8" 
-                x2="95" y2="25" 
-                stroke={isDark ? "#D1D5DB" : "#6B7280"} 
-                strokeWidth="2"
-            />
-            <path 
-                d="M95 8 L105 12 L95 16" 
-                fill={isDark ? "#EF4444" : "#DC2626"} 
-            />
+        <svg className={`w-full h-full ${className}`} viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform={rotation}>
+                <path d="M5 28 L20 15 L140 15 L155 28 L145 35 L15 35 Z" fill={colors.fill} />
+                <rect x="45" y="8" width="15" height="7" fill={colors.fill} />
+                <rect x="70" y="5" width="20" height="10" fill={colors.fill} />
+                <rect x="100" y="8" width="15" height="7" fill={colors.fill} />
+            </g>
         </svg>
     );
 };
 
-// Componente para mostrar un barco según su tamaño
+// Carrier - 5 Casillas
+export const Carrier = ({ className = "", orientation = "horizontal" }) => {
+    const { theme } = useTheme();
+    const colors = getShipColors(theme === 'dark');
+    const rotation = orientation === "vertical" ? "rotate(90 100 20)" : "";
+
+    return (
+        <svg className={`w-full h-full ${className}`} viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform={rotation}>
+                <rect x="5" y="15" width="190" height="20" rx="2" fill={colors.fill} />
+                <rect x="140" y="5" width="30" height="10" fill={colors.fill} />
+                <path d="M10 15 L30 5 L170 5 L190 15 Z" fill={colors.fill} opacity="0.3" /> 
+            </g>
+        </svg>
+    );
+};
+
+// Selector principal actualizado
 export const Ship = ({ size, className = "", orientation = "horizontal" }) => {
     switch(size) {
-        case 1:
-            return <SmallShip className={className} orientation={orientation} />;
-        case 2:
-            return <MediumShip className={className} orientation={orientation} />;
-        case 3:
-            return <LargeShip className={className} orientation={orientation} />;
-        default:
-            return <SmallShip className={className} orientation={orientation} />;
+        case 2: return <Destroyer className={className} orientation={orientation} />;
+        case 3: return <Cruiser className={className} orientation={orientation} />;
+        case 4: return <Battleship className={className} orientation={orientation} />;
+        case 5: return <Carrier className={className} orientation={orientation} />;
+        default: return <Destroyer className={className} orientation={orientation} />;
     }
 };
