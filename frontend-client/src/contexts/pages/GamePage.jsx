@@ -12,9 +12,9 @@ const styles = navalBase + `
     animation:fadeInUp 0.6s ease-out both;
   }
   .game-start-icon { font-size:5rem; line-height:1; filter:drop-shadow(0 0 30px rgba(59,130,246,0.5)); animation:ship-bob 4s ease-in-out infinite; }
-  .game-start-title { font-size:clamp(1.75rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.04em; color:var(--text-primary); margin:0; text-align:center; }
-  .game-start-title span { color:var(--accent-secondary); }
-  .game-start-sub  { color:var(--text-muted); text-align:center; font-size:0.9rem; line-height:1.6; max-width:340px; margin:0; }
+  .game-start-title { font-size:clamp(1.75rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.04em; color:#fff; margin:0; text-align:center; }
+  .game-start-title span { color:#60a5fa; }
+  .game-start-sub  { color:#9ca3af; text-align:center; font-size:0.9rem; line-height:1.6; max-width:340px; margin:0; }
 
   .game-btn {
     padding:0.9rem 2.5rem;
@@ -27,23 +27,23 @@ const styles = navalBase + `
   }
   .game-btn:hover { background:linear-gradient(135deg,#1d4ed8,#1e40af); transform:scale(1.04); box-shadow:0 8px 28px rgba(37,99,235,0.55); }
   .game-btn:active  { transform:scale(0.98); }
-  .game-btn--ghost  { background:var(--bg-card); border:1px solid var(--border-color); box-shadow:none; color:var(--text-primary); }
-  .game-btn--ghost:hover { border-color:var(--border-hover); box-shadow:0 4px 18px var(--accent-glow); transform:scale(1.02); }
+  .game-btn--ghost  { background:rgba(8,14,28,0.8); border:1px solid rgba(37,99,235,0.3); box-shadow:none; }
+  .game-btn--ghost:hover { background:rgba(15,25,50,0.9); box-shadow:0 4px 18px rgba(37,99,235,0.2); transform:scale(1.02); }
 
   .game-active-wrap { width:100%; max-width:560px; display:flex; flex-direction:column; align-items:center; gap:1.5rem; animation:fadeInUp 0.5s ease-out both; }
 
   .game-message-bar {
-    width:100%; background:var(--bg-card); backdrop-filter:blur(10px);
-    border:1px solid var(--border-color); border-radius:0.875rem;
+    width:100%; background:rgba(8,14,28,0.88); backdrop-filter:blur(10px);
+    border:1px solid rgba(37,99,235,0.25); border-radius:0.875rem;
     padding:0.875rem 1.25rem; display:flex; align-items:center; gap:0.75rem;
-    font-weight:600; font-size:0.95rem; color:var(--text-secondary); min-height:52px;
+    font-weight:600; font-size:0.95rem; color:#e2e8f0; min-height:52px;
     box-sizing:border-box;
   }
-  .game-message-dot { width:10px; height:10px; border-radius:50%; background:var(--accent-secondary); flex-shrink:0; box-shadow:0 0 10px rgba(59,130,246,0.7); animation:ping-slow 1.5s ease-in-out infinite; }
+  .game-message-dot { width:10px; height:10px; border-radius:50%; background:#3b82f6; flex-shrink:0; box-shadow:0 0 10px rgba(59,130,246,0.7); animation:ping-slow 1.5s ease-in-out infinite; }
 
-  .game-board-wrap { width:100%; background:var(--bg-card); backdrop-filter:blur(10px); border:1px solid var(--border-color); border-radius:1rem; padding:1.25rem; box-sizing:border-box; }
+  .game-board-wrap { width:100%; background:rgba(8,14,28,0.88); backdrop-filter:blur(10px); border:1px solid rgba(37,99,235,0.25); border-radius:1rem; padding:1.25rem; box-sizing:border-box; }
 
-  .game-legend { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; background:var(--bg-card); border:1px solid var(--border-color); border-radius:0.75rem; padding:0.75rem 1.25rem; font-size:0.8rem; color:var(--text-muted); }
+  .game-legend { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; background:rgba(8,14,28,0.7); border:1px solid rgba(37,99,235,0.15); border-radius:0.75rem; padding:0.75rem 1.25rem; font-size:0.8rem; color:#9ca3af; }
   .game-legend-item { display:flex; align-items:center; gap:0.4rem; }
   .game-legend-dot  { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
 
@@ -70,14 +70,14 @@ const GamePage = () => {
                 <main className="naval-main">
                     {!gameId ? (
                         <div className="game-start-wrap">
-                            <div className="game-start-icon">{'\u{1F6F3}\uFE0F'}</div>
+                            <div className="game-start-icon">🛳️</div>
                             <div style={{textAlign:'center'}}>
-                                <h2 className="game-start-title">{'Zarpa a '}<span>rescatar</span>{' la flota!'}</h2>
+                                <h2 className="game-start-title">¡Zarpa a <span>rescatar</span> la flota!</h2>
                                 <p className="game-start-sub" style={{marginTop:'0.75rem'}}>
-                                    Localiza y rescata todos los barcos perdidos en el oceano antes de quedarte sin intentos.
+                                    Localiza y rescata todos los barcos perdidos en el océano antes de quedarte sin intentos.
                                 </p>
                             </div>
-                            <button className="game-btn" onClick={startNewGame}>{'\u{1F680}'} Iniciar Mision</button>
+                            <button className="game-btn" onClick={startNewGame}>🚀 Iniciar Misión</button>
                         </div>
                     ) : (
                         <div className="game-active-wrap">
@@ -89,13 +89,13 @@ const GamePage = () => {
                                 <Board board={board} onCellClick={shoot} />
                             </div>
                             <div className="game-legend">
-                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#22c55e'}}/>{' Rescatado \u2693'}</div>
-                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#475569'}}/>{' Agua \u{1F4A7}'}</div>
-                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#1d4ed8'}}/>{' Sin explorar'}</div>
+                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#22c55e'}}/>Rescatado ⚓</div>
+                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#475569'}}/>Agua 💧</div>
+                                <div className="game-legend-item"><div className="game-legend-dot" style={{background:'#1d4ed8'}}/>Sin explorar</div>
                             </div>
                             <div className="game-actions">
-                                <button className="game-btn game-btn--ghost" onClick={() => setGameId(null)}>{'\u{1F504}'} Nueva Partida</button>
-                                <a href="/ranking" className="game-btn game-btn--ghost">{'\u{1F3C6}'} Ver Ranking</a>
+                                <button className="game-btn game-btn--ghost" onClick={() => setGameId(null)}>🔄 Nueva Partida</button>
+                                <a href="/ranking" className="game-btn game-btn--ghost">🏆 Ver Ranking</a>
                             </div>
                         </div>
                     )}

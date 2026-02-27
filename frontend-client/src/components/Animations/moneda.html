@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Moneda Naval Realista</title>
+<style>
+  :root {
+    --gold: #d4af37;
+    --gold-dark: #8a6d1a;
+    --gold-light: #f9e1a0;
+  }
+
+  body {
+    background: #1a1a1a;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    perspective: 1500px;
+    margin: 0;
+  }
+
+  .moneda {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.3, 1.05);
+  }
+
+  /* Caras de la moneda */
+  .cara {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    /* Efecto de metal cepillado y relieve */
+    background: radial-gradient(circle, var(--gold-light) 0%, var(--gold) 70%, var(--gold-dark) 100%);
+    border: 2px solid var(--gold-dark);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  .frente { transform: rotateY(0deg) translateZ(6px); }
+  .atras { transform: rotateY(180deg) translateZ(6px); }
+
+  /* El borde estriado (milling) */
+  .canto {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      from 0deg,
+      var(--gold-dark) 0deg 2deg,
+      var(--gold) 2deg 4deg
+    );
+    transform: translateZ(0);
+  }
+
+  /* Iconografía estilo grabado */
+  svg {
+    width: 70%;
+    filter: drop-shadow(2px 2px 1px rgba(255,255,255,0.3)) drop-shadow(-1px -1px 1px rgba(0,0,0,0.5));
+    fill: #5a4610;
+  }
+
+  .etiqueta {
+    font-family: serif;
+    font-weight: bold;
+    color: #5a4610;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.2);
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 50px;
+    padding: 15px 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: var(--gold);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 0 var(--gold-dark);
+    transition: all 0.1s;
+  }
+
+  button:active {
+    transform: translateY(5px);
+    box-shadow: 0 5px 0 var(--gold-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="moneda" id="moneda">
+  <div class="canto"></div>
+  
+  <div class="cara frente">
+    <svg viewBox="0 0 180 60">
+      <path d="M10 35 L170 35 L160 55 L20 55 Z M60 25 h40 v10 h-40 z M75 15 h15 v10 h-15 z M40 30 h15 v5 h-15 z M110 30 h15 v5 h-15 z" />
+    </svg>
+    <div class="etiqueta">BATTLESHIP</div>
+  </div>
+
+  <div class="cara atras">
+    <svg viewBox="0 0 150 60">
+      <path d="M10 40 L140 40 L130 55 L20 55 Z M40 40 V25 h20 l10 -10 h20 l10 10 h10 V40 z" />
+    </svg>
+    <div class="etiqueta">CRUISER</div>
+  </div>
+</div>
+
+<button onclick="lanzar()">Lanzar Moneda</button>
+
+<script>
+  let totalRotacion = 0;
+
+  function lanzar() {
+    const moneda = document.getElementById('moneda');
+    const esCara = Math.random() < 0.5;
+    
+    // 5 a 10 vueltas completas + posición final
+    const vueltas = (Math.floor(Math.random() * 5) + 5) * 360;
+    const extra = esCara ? 0 : 180;
+    
+    totalRotacion += vueltas + extra;
+
+    // Animación de subida y bajada
+    moneda.style.transform = `translateY(-300px) rotateY(${totalRotacion}deg) scale(1.2)`;
+    
+    setTimeout(() => {
+      moneda.style.transform = `translateY(0) rotateY(${totalRotacion}deg) scale(1)`;
+    }, 600);
+  }
+</script>
+
+</body>
+</html>

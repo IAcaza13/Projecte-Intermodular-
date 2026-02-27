@@ -11,10 +11,9 @@ const styles = navalBase + `
   @keyframes ship-enter{ from{opacity:0;transform:translateX(-50px) translateY(8px)} to{opacity:1;transform:translateX(0) translateY(0)} }
   @keyframes title-glow{ 0%,100%{text-shadow:0 0 20px rgba(96,165,250,0.4)} 50%{text-shadow:0 0 40px rgba(96,165,250,0.9),0 0 80px rgba(37,99,235,0.3)} }
 
-  /* Page override para login (centrado) */
   .fleet-page {
     font-family:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
-    min-height:100vh; background:#05080f; color:#f9fafb;
+    min-height:100vh; background:var(--bg-primary); color:var(--text-primary);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:2rem 1rem; position:relative; overflow:hidden;
   }
@@ -31,30 +30,28 @@ const styles = navalBase + `
     animation:fadeInUp 0.7s ease-out both;
   }
 
-  /* Logo area */
   .fleet-logo-wrap   { text-align:center; margin-bottom:1.75rem; position:relative; z-index:10; }
   .fleet-ship-wrap   { animation:ship-bob 4s ease-in-out infinite, ship-enter 0.9s ease-out both; margin-bottom:0.25rem; }
   .fleet-logo-icon   {
     display:inline-flex; align-items:center; justify-content:center;
-    width:68px; height:68px; background:#2563eb; border-radius:50%;
-    margin-bottom:0.875rem; box-shadow:0 0 28px rgba(37,99,235,0.55);
+    width:68px; height:68px; background:var(--accent-primary); border-radius:50%;
+    margin-bottom:0.875rem; box-shadow:0 0 28px var(--accent-glow);
     transition:all 0.3s ease; cursor:pointer;
     animation:float 6s ease-in-out infinite;
   }
   .fleet-logo-icon:hover { transform:rotate(6deg) scale(1.08); box-shadow:0 0 50px rgba(59,130,246,0.8); }
   .fleet-title {
     font-size:2.4rem; font-weight:900; letter-spacing:-0.05em;
-    text-transform:uppercase; font-style:italic; color:#60a5fa;
+    text-transform:uppercase; font-style:italic; color:var(--accent-secondary);
     margin:0; line-height:1; animation:title-glow 3s ease-in-out infinite;
   }
-  .fleet-title span  { color:#fff; }
-  .fleet-subtitle    { color:#9ca3af; margin-top:0.5rem; font-size:0.875rem; }
+  .fleet-title span  { color:var(--text-primary); }
+  .fleet-subtitle    { color:var(--text-muted); margin-top:0.5rem; font-size:0.875rem; }
 
-  /* Card */
   .fleet-card {
-    background:rgba(8,14,28,0.93); backdrop-filter:blur(16px);
-    border-radius:1.25rem; border:1px solid rgba(37,99,235,0.3);
-    box-shadow:0 30px 70px rgba(0,0,0,0.65),inset 0 1px 0 rgba(96,165,250,0.08);
+    background:var(--bg-card); backdrop-filter:blur(16px);
+    border-radius:1.25rem; border:1px solid var(--border-color);
+    box-shadow:var(--card-shadow);
     overflow:hidden;
   }
   .fleet-card-bar {
@@ -64,37 +61,36 @@ const styles = navalBase + `
   }
   .fleet-card-body { padding:2rem; }
 
-  .fleet-form-title  { font-size:1.5rem; font-weight:700; text-align:center; color:#fff; margin:0 0 0.5rem; }
-  .fleet-form-desc   { text-align:center; color:#9ca3af; font-size:0.875rem; margin:0 0 2rem; }
+  .fleet-form-title  { font-size:1.5rem; font-weight:700; text-align:center; color:var(--text-primary); margin:0 0 0.5rem; }
+  .fleet-form-desc   { text-align:center; color:var(--text-muted); font-size:0.875rem; margin:0 0 2rem; }
   .fleet-error {
     background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4);
     color:#fca5a5; padding:0.75rem 1rem; border-radius:0.5rem;
     font-size:0.875rem; margin-bottom:1.25rem;
   }
 
-  /* Form fields */
   .fleet-form  { display:flex; flex-direction:column; gap:1.25rem; }
   .fleet-field { display:flex; flex-direction:column; gap:0.5rem; }
-  .fleet-label { font-size:0.875rem; font-weight:500; color:#d1d5db; }
+  .fleet-label { font-size:0.875rem; font-weight:500; color:var(--text-label); }
   .fleet-input-wrap  { position:relative; }
   .fleet-input-icon  {
     position:absolute; left:0.75rem; top:50%; transform:translateY(-50%);
-    color:#6b7280; pointer-events:none; width:20px; height:20px;
+    color:var(--text-help); pointer-events:none; width:20px; height:20px;
   }
   .fleet-input {
     width:100%; padding:0.75rem 0.75rem 0.75rem 2.5rem;
-    background:#0c1626; border:1px solid #1e3a5f;
-    border-radius:0.5rem; color:#fff; font-size:1rem; font-family:inherit;
+    background:var(--bg-input); border:1px solid var(--border-input);
+    border-radius:0.5rem; color:var(--text-primary); font-size:1rem; font-family:inherit;
     outline:none; transition:border-color 0.2s,box-shadow 0.2s,background 0.2s;
     box-sizing:border-box;
   }
-  .fleet-input::placeholder { color:#4b5563; }
-  .fleet-input:focus { border-color:#3b82f6; background:#091220; box-shadow:0 0 0 3px rgba(59,130,246,0.2); }
+  .fleet-input::placeholder { color:var(--text-placeholder); }
+  .fleet-input:focus { border-color:var(--accent-secondary); background:var(--bg-input-focus); box-shadow:0 0 0 3px var(--accent-glow); }
 
   .fleet-row       { display:flex; align-items:center; justify-content:space-between; font-size:0.875rem; }
-  .fleet-remember  { display:flex; align-items:center; gap:0.5rem; color:#9ca3af; cursor:pointer; }
-  .fleet-remember input[type="checkbox"] { accent-color:#3b82f6; width:16px; height:16px; cursor:pointer; }
-  .fleet-forgot    { color:#60a5fa; text-decoration:none; font-size:0.8rem; }
+  .fleet-remember  { display:flex; align-items:center; gap:0.5rem; color:var(--text-muted); cursor:pointer; }
+  .fleet-remember input[type="checkbox"] { accent-color:var(--accent-secondary); width:16px; height:16px; cursor:pointer; }
+  .fleet-forgot    { color:var(--text-link); text-decoration:none; font-size:0.8rem; }
   .fleet-forgot:hover { text-decoration:underline; }
 
   .fleet-btn {
@@ -111,15 +107,14 @@ const styles = navalBase + `
   .fleet-btn svg { transition:transform 0.2s; }
   .fleet-btn:hover svg { transform:rotate(12deg); }
 
-  .fleet-link-row { text-align:center; font-size:0.875rem; color:#9ca3af; margin-top:0.5rem; }
-  .fleet-link     { color:#60a5fa; font-weight:500; text-decoration:none; }
+  .fleet-link-row { text-align:center; font-size:0.875rem; color:var(--text-muted); margin-top:0.5rem; }
+  .fleet-link     { color:var(--text-link); font-weight:500; text-decoration:none; }
   .fleet-link:hover { text-decoration:underline; }
 
-  .fleet-card-footer { position:relative; height:48px; overflow:hidden; color:#060d1a; }
-  .fleet-help { margin-top:1.5rem; text-align:center; font-size:0.875rem; color:#6b7280; }
+  .fleet-card-footer { position:relative; height:48px; overflow:hidden; color:var(--footer-wave-color); }
+  .fleet-help { margin-top:1.5rem; text-align:center; font-size:0.875rem; color:var(--text-help); }
 `;
 
-// Barco pequeño para la pantalla de login
 const LoginShip = () => (
     <svg width="200" height="72" viewBox="0 0 200 72" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 50 L32 36 L168 36 L185 50 L172 62 L28 62 Z" fill="#1e3a6e" stroke="#3b82f6" strokeWidth="1.5"/>
@@ -155,7 +150,7 @@ export const LoginForm = () => {
             await login({ email, password });
             navigate('/dashboard');
         } catch {
-            setError('Credenciales incorrectas. Inténtalo de nuevo.');
+            setError('Credenciales incorrectas. Intentalo de nuevo.');
         } finally {
             setLoading(false);
         }
@@ -168,7 +163,6 @@ export const LoginForm = () => {
                 <OceanBG />
 
                 <div className="fleet-content">
-                    {/* Logo + barco */}
                     <div className="fleet-logo-wrap">
                         <div className="fleet-ship-wrap"><LoginShip /></div>
                         <div className="fleet-logo-icon">
@@ -177,10 +171,9 @@ export const LoginForm = () => {
                             </svg>
                         </div>
                         <h1 className="fleet-title">Fleet <span>Rescue</span></h1>
-                        <p className="fleet-subtitle">¡Rescata la flota perdida!</p>
+                        <p className="fleet-subtitle">Rescata la flota perdida!</p>
                     </div>
 
-                    {/* Card */}
                     <div className="fleet-card">
                         <div className="fleet-card-bar"/>
                         <div className="fleet-card-body">
@@ -202,7 +195,7 @@ export const LoginForm = () => {
                                 </div>
 
                                 <div className="fleet-field">
-                                    <label className="fleet-label" htmlFor="password">Contraseña</label>
+                                    <label className="fleet-label" htmlFor="password">Contrasena</label>
                                     <div className="fleet-input-wrap">
                                         <svg className="fleet-input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
@@ -217,35 +210,32 @@ export const LoginForm = () => {
                                         <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)}/>
                                         Recordarme
                                     </label>
-                                    <a href="#" className="fleet-forgot">¿Olvidaste tu contraseña?</a>
+                                    <a href="#" className="fleet-forgot">Olvidaste tu contrasena?</a>
                                 </div>
 
                                 <button type="submit" className="fleet-btn" disabled={loading}>
                                     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd"/>
                                     </svg>
-                                    {loading ? 'Entrando...' : 'Iniciar Sesión'}
+                                    {loading ? 'Entrando...' : 'Iniciar Sesion'}
                                 </button>
 
                                 <p className="fleet-link-row">
-                                    ¿No tienes cuenta?{' '}
-                                    <Link to="/register" className="fleet-link">Regístrate aquí</Link>
+                                    No tienes cuenta?{' '}
+                                    <Link to="/register" className="fleet-link">Registrate aqui</Link>
                                 </p>
                             </form>
                         </div>
 
                         <div className="fleet-card-footer">
-                            <svg style={{position:'absolute',bottom:0,width:'100%',height:'48px',color:'#060d1a'}}
+                            <svg style={{position:'absolute',bottom:0,width:'100%',height:'48px'}}
                                 preserveAspectRatio="none" viewBox="0 0 1200 120">
                                 <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"/>
                             </svg>
                         </div>
                     </div>
 
-                    <div className="fleet-help">
-                        ¿Eres un nuevo recluta?{' '}
-                        <Link to="/register" className="fleet-link">Únete a la flota</Link>
-                    </div>
+                 
                 </div>
 
                 <RadarDeco />

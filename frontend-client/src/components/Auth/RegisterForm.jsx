@@ -11,7 +11,7 @@ const styles = navalBase + `
 
   .fleet-page {
     font-family:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
-    min-height:100vh; background:#05080f; color:#f9fafb;
+    min-height:100vh; background:var(--bg-primary); color:var(--text-primary);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:2rem 1rem; position:relative; overflow:hidden;
   }
@@ -27,23 +27,23 @@ const styles = navalBase + `
   .fleet-logo-wrap { text-align:center; margin-bottom:1.75rem; }
   .fleet-logo-icon {
     display:inline-flex; align-items:center; justify-content:center;
-    width:68px; height:68px; background:#2563eb; border-radius:50%;
-    margin-bottom:0.875rem; box-shadow:0 0 28px rgba(37,99,235,0.55);
+    width:68px; height:68px; background:var(--accent-primary); border-radius:50%;
+    margin-bottom:0.875rem; box-shadow:0 0 28px var(--accent-glow);
     transition:all 0.3s; cursor:pointer; animation:float 6s ease-in-out infinite;
   }
   .fleet-logo-icon:hover { transform:rotate(6deg) scale(1.08); }
   .fleet-title {
     font-size:2.4rem; font-weight:900; letter-spacing:-0.05em;
-    text-transform:uppercase; font-style:italic; color:#60a5fa;
+    text-transform:uppercase; font-style:italic; color:var(--accent-secondary);
     margin:0; line-height:1; animation:title-glow 3s ease-in-out infinite;
   }
-  .fleet-title span  { color:#fff; }
-  .fleet-subtitle    { color:#9ca3af; margin-top:0.5rem; font-size:0.875rem; }
+  .fleet-title span  { color:var(--text-primary); }
+  .fleet-subtitle    { color:var(--text-muted); margin-top:0.5rem; font-size:0.875rem; }
 
   .fleet-card {
-    background:rgba(8,14,28,0.93); backdrop-filter:blur(16px);
-    border-radius:1.25rem; border:1px solid rgba(37,99,235,0.3);
-    box-shadow:0 30px 70px rgba(0,0,0,0.65); overflow:hidden;
+    background:var(--bg-card); backdrop-filter:blur(16px);
+    border-radius:1.25rem; border:1px solid var(--border-color);
+    box-shadow:var(--card-shadow); overflow:hidden;
   }
   .fleet-card-bar {
     height:4px;
@@ -52,8 +52,8 @@ const styles = navalBase + `
   }
   .fleet-card-body { padding:2rem; }
 
-  .fleet-form-title { font-size:1.5rem; font-weight:700; text-align:center; color:#fff; margin:0 0 0.5rem; }
-  .fleet-form-desc  { text-align:center; color:#9ca3af; font-size:0.875rem; margin:0 0 1.5rem; }
+  .fleet-form-title { font-size:1.5rem; font-weight:700; text-align:center; color:var(--text-primary); margin:0 0 0.5rem; }
+  .fleet-form-desc  { text-align:center; color:var(--text-muted); font-size:0.875rem; margin:0 0 1.5rem; }
   .fleet-error {
     background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4);
     color:#fca5a5; padding:0.75rem 1rem; border-radius:0.5rem;
@@ -62,26 +62,26 @@ const styles = navalBase + `
 
   .fleet-form  { display:flex; flex-direction:column; gap:1rem; }
   .fleet-field { display:flex; flex-direction:column; gap:0.4rem; }
-  .fleet-label { font-size:0.875rem; font-weight:500; color:#d1d5db; }
+  .fleet-label { font-size:0.875rem; font-weight:500; color:var(--text-label); }
   .fleet-input-wrap { position:relative; }
   .fleet-input-icon {
     position:absolute; left:0.75rem; top:50%; transform:translateY(-50%);
-    color:#6b7280; pointer-events:none; width:20px; height:20px;
+    color:var(--text-help); pointer-events:none; width:20px; height:20px;
   }
   .fleet-input {
     width:100%; padding:0.75rem 0.75rem 0.75rem 2.5rem;
-    background:#0c1626; border:1px solid #1e3a5f;
-    border-radius:0.5rem; color:#fff; font-size:1rem; font-family:inherit;
+    background:var(--bg-input); border:1px solid var(--border-input);
+    border-radius:0.5rem; color:var(--text-primary); font-size:1rem; font-family:inherit;
     outline:none; transition:border-color 0.2s,box-shadow 0.2s; box-sizing:border-box;
   }
-  .fleet-input::placeholder { color:#4b5563; }
-  .fleet-input:focus { border-color:#3b82f6; background:#091220; box-shadow:0 0 0 3px rgba(59,130,246,0.2); }
+  .fleet-input::placeholder { color:var(--text-placeholder); }
+  .fleet-input:focus { border-color:var(--accent-secondary); background:var(--bg-input-focus); box-shadow:0 0 0 3px var(--accent-glow); }
   .fleet-field-error { font-size:0.75rem; color:#f87171; }
-  .fleet-hint        { font-size:0.75rem; color:#6b7280; }
+  .fleet-hint        { font-size:0.75rem; color:var(--text-help); }
 
-  .fleet-terms { display:flex; align-items:flex-start; gap:0.75rem; font-size:0.875rem; color:#9ca3af; cursor:pointer; }
-  .fleet-terms input[type="checkbox"] { accent-color:#3b82f6; width:16px; height:16px; margin-top:2px; flex-shrink:0; cursor:pointer; }
-  .fleet-terms a { color:#60a5fa; text-decoration:none; }
+  .fleet-terms { display:flex; align-items:flex-start; gap:0.75rem; font-size:0.875rem; color:var(--text-muted); cursor:pointer; }
+  .fleet-terms input[type="checkbox"] { accent-color:var(--accent-secondary); width:16px; height:16px; margin-top:2px; flex-shrink:0; cursor:pointer; }
+  .fleet-terms a { color:var(--text-link); text-decoration:none; }
   .fleet-terms a:hover { text-decoration:underline; }
 
   .fleet-btn {
@@ -99,12 +99,12 @@ const styles = navalBase + `
   .fleet-btn svg { transition:transform 0.2s; }
   .fleet-btn:hover svg { transform:rotate(12deg); }
 
-  .fleet-link-row { text-align:center; font-size:0.875rem; color:#9ca3af; }
-  .fleet-link     { color:#60a5fa; font-weight:500; text-decoration:none; }
+  .fleet-link-row { text-align:center; font-size:0.875rem; color:var(--text-muted); }
+  .fleet-link     { color:var(--text-link); font-weight:500; text-decoration:none; }
   .fleet-link:hover { text-decoration:underline; }
 
-  .fleet-card-footer { position:relative; height:48px; overflow:hidden; color:#060d1a; }
-  .fleet-help { margin-top:1.5rem; text-align:center; font-size:0.875rem; color:#6b7280; }
+  .fleet-card-footer { position:relative; height:48px; overflow:hidden; color:var(--footer-wave-color); }
+  .fleet-help { margin-top:1.5rem; text-align:center; font-size:0.875rem; color:var(--text-help); }
 `;
 
 const LockIcon = () => (
@@ -132,7 +132,7 @@ export const RegisterForm = () => {
             if (err.response?.status === 400 || err.response?.status === 422) {
                 setErrors(err.response.data.errors || err.response.data);
             } else {
-                setErrors({ general: 'Error inesperado. Inténtalo de nuevo.' });
+                setErrors({ general: 'Error inesperado. Intentalo de nuevo.' });
             }
         } finally {
             setLoading(false);
@@ -153,18 +153,17 @@ export const RegisterForm = () => {
                             </svg>
                         </div>
                         <h1 className="fleet-title">Fleet <span>Rescue</span></h1>
-                        <p className="fleet-subtitle">¡Rescata la flota perdida!</p>
+                        <p className="fleet-subtitle">Rescata la flota perdida!</p>
                     </div>
 
                     <div className="fleet-card">
                         <div className="fleet-card-bar"/>
                         <div className="fleet-card-body">
-                            <h2 className="fleet-form-title">Únete a la flota</h2>
+                            <h2 className="fleet-form-title">Unete a la flota</h2>
                             <p className="fleet-form-desc">Crea tu cuenta y comienza el rescate</p>
                             {errors.general && <div className="fleet-error">{errors.general}</div>}
 
                             <form onSubmit={handleSubmit} className="fleet-form">
-                                {/* Username */}
                                 <div className="fleet-field">
                                     <label className="fleet-label" htmlFor="username">Nombre de usuario</label>
                                     <div className="fleet-input-wrap">
@@ -177,7 +176,6 @@ export const RegisterForm = () => {
                                     {errors.username && <span className="fleet-field-error">{errors.username[0]}</span>}
                                 </div>
 
-                                {/* Email */}
                                 <div className="fleet-field">
                                     <label className="fleet-label" htmlFor="reg-email">Email</label>
                                     <div className="fleet-input-wrap">
@@ -191,21 +189,19 @@ export const RegisterForm = () => {
                                     {errors.email && <span className="fleet-field-error">{errors.email[0]}</span>}
                                 </div>
 
-                                {/* Password */}
                                 <div className="fleet-field">
-                                    <label className="fleet-label" htmlFor="reg-password">Contraseña</label>
+                                    <label className="fleet-label" htmlFor="reg-password">Contrasena</label>
                                     <div className="fleet-input-wrap">
                                         <LockIcon/>
                                         <input id="reg-password" type="password" className="fleet-input" placeholder="••••••••"
                                             value={formData.password} onChange={handleChange('password')} required/>
                                     </div>
                                     {errors.password && <span className="fleet-field-error">{errors.password[0]}</span>}
-                                    <span className="fleet-hint">Mínimo 6 caracteres</span>
+                                    <span className="fleet-hint">Minimo 6 caracteres</span>
                                 </div>
 
-                                {/* Confirm password */}
                                 <div className="fleet-field">
-                                    <label className="fleet-label" htmlFor="reg-confirm">Confirmar contraseña</label>
+                                    <label className="fleet-label" htmlFor="reg-confirm">Confirmar contrasena</label>
                                     <div className="fleet-input-wrap">
                                         <LockIcon/>
                                         <input id="reg-confirm" type="password" className="fleet-input" placeholder="••••••••"
@@ -213,10 +209,9 @@ export const RegisterForm = () => {
                                     </div>
                                 </div>
 
-                                {/* Terms */}
                                 <label className="fleet-terms">
                                     <input type="checkbox" checked={termsAccepted} onChange={e => setTerms(e.target.checked)} required/>
-                                    <span>Acepto los <a href="#">términos del servicio</a> y la <a href="#">política de privacidad</a></span>
+                                    <span>Acepto los <a href="#">terminos del servicio</a> y la <a href="#">politica de privacidad</a></span>
                                 </label>
 
                                 <button type="submit" className="fleet-btn" disabled={loading}>
@@ -227,14 +222,14 @@ export const RegisterForm = () => {
                                 </button>
 
                                 <p className="fleet-link-row">
-                                    ¿Ya tienes cuenta?{' '}
-                                    <Link to="/login" className="fleet-link">Inicia sesión</Link>
+                                    Ya tienes cuenta?{' '}
+                                    <Link to="/login" className="fleet-link">Inicia sesion</Link>
                                 </p>
                             </form>
                         </div>
 
                         <div className="fleet-card-footer">
-                            <svg style={{position:'absolute',bottom:0,width:'100%',height:'48px',color:'#060d1a'}}
+                            <svg style={{position:'absolute',bottom:0,width:'100%',height:'48px'}}
                                 preserveAspectRatio="none" viewBox="0 0 1200 120">
                                 <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"/>
                             </svg>
@@ -242,8 +237,8 @@ export const RegisterForm = () => {
                     </div>
 
                     <div className="fleet-help">
-                        ¿Ya eres parte de la flota?{' '}
-                        <Link to="/login" className="fleet-link">Inicia sesión</Link>
+                        Ya eres parte de la flota?{' '}
+                        <Link to="/login" className="fleet-link">Inicia sesion</Link>
                     </div>
                 </div>
 
