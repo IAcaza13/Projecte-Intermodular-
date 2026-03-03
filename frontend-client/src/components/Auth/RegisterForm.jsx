@@ -122,7 +122,26 @@ export const RegisterForm = () => {
 
     const handleChange = field => e => setFormData({ ...formData, [field]: e.target.value });
 
-    const handleSubmit = async (e) => {
+       const handleSubmit = async (e) => {
+
+    e.preventDefault();
+    setErrors({}); // Limpiar errores previos
+    try {
+        if (formData.password !== e.target.password_confirmation.value) {
+            setErrors({ password_confirmation: ["Las contraseñas no coinciden."] });
+            return;
+        }
+        
+        await api.post('/register', formData);
+        alert("¡Registro éxito! Ahora loguéate.");
+        redirect('/login'); // Redirigir al login tras registrarse
+    } catch (err) {
+        if (err.response && err.response.status === 400) {
+            // Guardamos los errores que envía Laravel (email, password, etc)
+            setErrors(err.response.data.errors || err.response.data);
+        } else {
+            console.error("Error inesperado", err);
+
         e.preventDefault();
         setErrors({}); setLoading(true);
         try {
@@ -132,13 +151,15 @@ export const RegisterForm = () => {
             if (err.response?.status === 400 || err.response?.status === 422) {
                 setErrors(err.response.data.errors || err.response.data);
             } else {
-                setErrors({ general: 'Error inesperado. Intentalo de nuevo.' });
+                setErrors({ general: 'Error inesperado. Inténtalo de nuevo.' });
             }
         } finally {
             setLoading(false);
+
         }
     };
-
+};
+};
     return (
         <>
             <style>{styles}</style>
@@ -247,3 +268,4 @@ export const RegisterForm = () => {
         </>
     );
 };
+       
