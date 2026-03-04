@@ -11,10 +11,11 @@ use App\Services\BoardService;
 class GameController extends Controller
 {
     // Iniciar partida
-    public function start(Request $request, BoardService $boardService) {
+    public function start(Request $request, BoardService $boardService)
+    {
         $game = Game::create([
             'user_id' => $request->user()->id,
-            'status'  => 'active'
+            'status'  => 'active',
         ]);
 
         $ships = $boardService->generateBoard();
@@ -23,54 +24,57 @@ class GameController extends Controller
                 'game_id'       => $game->id,
                 'type'          => $s['type'],
                 'coordinates'   => json_encode($s['coordinates']),
-                'hits_received' => json_encode([])
+                'hits_received' => json_encode([]),
             ]);
         }
 
         return response()->json([
             'game_id' => $game->id,
-            'message' => '¡Partida lista!'
+            'message' => '¡Partida lista!',
         ]);
     }
 
     // Realizar una tirada
-    public function shoot(Request $request, $id) {
+    public function shoot(Request $request, $id)
+    {
         $game = Game::findOrFail($id);
-        $x    = $request->x;
-        $y    = $request->y;
+        $x    = (int) $request->x;
+        $y    = (int) $request->y;
 
-        // Buscar si hay un barco en esa posición
+        // Buscar barco en esa posición comparando coordenadas
         $allShips = Ship::where('game_id', $id)->get();
         $hitShip  = null;
 
         foreach ($allShips as $ship) {
-            $coords = json_decode($ship->coordinates, true);
+            $coords = json_decode($ship->coordinates, true) ?? [];
             foreach ($coords as $coord) {
-                if ($coord['x'] == $x && $coord['y'] == $y) {
+                if ((int)$coord['x'] === $x && (int)$coord['y'] === $y) {
                     $hitShip = $ship;
                     break 2;
                 }
             }
         }
 
-        $isHit = !is_null($hitShip);
+        $isHit = $hitShip !== null;
 
+        // Registrar movimiento
         Move::create([
             'game_id' => $id,
             'x'       => $x,
             'y'       => $y,
-            'is_hit'  => $isHit
+            'is_hit'  => $isHit,
         ]);
 
         $game->increment('attempts');
-        if ($isHit) $game->increment('hits');
+        if ($isHit) {
+            $game->increment('hits');
+        }
 
-        // ── Detectar si el barco quedó hundido completo ──────────
-        $shipSunk        = false;
-        $sunkShipData    = null;
+        // ── Detectar si el barco quedó hundido completo ──────
+        $shipSunk     = false;
+        $sunkShipData = null;
 
         if ($isHit) {
-            // Acumular hits recibidos en este barco
             $hitsReceived   = json_decode($hitShip->hits_received, true) ?? [];
             $hitsReceived[] = ['x' => $x, 'y' => $y];
             $hitShip->hits_received = json_encode($hitsReceived);
@@ -78,40 +82,44 @@ class GameController extends Controller
 
             $shipCoords = json_decode($hitShip->coordinates, true);
 
-            // Si todos los coords del barco han sido impactados → hundido
             if (count($hitsReceived) >= count($shipCoords)) {
-                $shipSunk = true;
+                $shipSunk     = true;
                 $sunkShipData = [
                     'type'        => $hitShip->type,
                     'size'        => count($shipCoords),
-                    'coordinates' => $shipCoords,   // [{x,y}, ...]
+                    'coordinates' => $shipCoords,  // [{x, y}, ...]
                 ];
+            }
+        }
 
-                // Comprobar si la partida está ganada (todos los barcos hundidos)
-                $totalShips = Ship::where('game_id', $id)->count();
-                $allMoves   = Move::where('game_id', $id)->where('is_hit', true)->pluck('x', 'y');
-
-                $allSunk = true;
-                foreach ($allShips as $s) {
-                    $sc   = json_decode($s->coordinates, true);
-                    $hits = json_decode($s->hits_received, true) ?? [];
-                    if (count($hits) < count($sc)) { $allSunk = false; break; }
+        // ── Detectar si la partida está ganada ───────────────
+        $gameWon = false;
+        if ($shipSunk) {
+            // Recargar todos los barcos para comprobar estado
+            $allShips = Ship::where('game_id', $id)->get();
+            $allSunk  = true;
+            foreach ($allShips as $s) {
+                $sc   = json_decode($s->coordinates, true);
+                $hits = json_decode($s->hits_received, true) ?? [];
+                if (count($hits) < count($sc)) {
+                    $allSunk = false;
+                    break;
                 }
-
-                if ($allSunk) {
-                    $game->status = 'won';
-                    $game->save();
-                }
+            }
+            if ($allSunk) {
+                $game->status = 'won';
+                $game->save();
+                $gameWon = true;
             }
         }
 
         return response()->json([
-            'hit'          => $isHit,
-            'ship_found'   => $isHit ? $hitShip->type : null,
-            'ship_sunk'    => $shipSunk,
-            'sunk_ship'    => $sunkShipData,   // null o { type, size, coordinates }
-            'game_won'     => ($game->status === 'won'),
-            'attempts'     => $game->attempts,
+            'hit'        => $isHit,
+            'ship_found' => $isHit ? $hitShip->type : null,
+            'ship_sunk'  => $shipSunk,
+            'sunk_ship'  => $sunkShipData,   // null  o  { type, size, coordinates:[{x,y}] }
+            'game_won'   => $gameWon,
+            'attempts'   => $game->fresh()->attempts,
         ]);
     }
 }

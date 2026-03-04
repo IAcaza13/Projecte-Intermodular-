@@ -2,97 +2,82 @@
 import { useState, useRef, useCallback } from 'react';
 import api from '../api/axiosConfig';
 
-// ── Audio helper robusto ──────────────────────────────────────
-// Los archivos deben estar en /public/assets/  (Vite los sirve desde raíz)
-// Si usas create-react-app ponlos en /public/assets/
-const HIT_SOUND  = '/assets/hitprueba.mp3';
-const MISS_SOUND = '/assets/miss.mp3';
+// ── Importar sonidos con Vite (resuelve la ruta correctamente) ──
+// Los archivos están en src/assets/sounds/
+import hitSound  from '../assets/sounds/hitprueba.mp3';
+import missSound from '../assets/sounds/miss.mp3';
+import winSound  from '../assets/sounds/winning.mp3';
+import rescate from '../assets/sounds/rescatebarco.mp3';
 
+// ── Audio helper robusto ────────────────────────────────────────
 const playSound = (src) => {
     try {
         const audio = new Audio(src);
         audio.volume = 0.6;
-        // .play() devuelve Promise — siempre capturar el rechazo
-        const promise = audio.play();
-        if (promise !== undefined) {
-            promise.catch(() => {
-                // El navegador bloqueó el autoplay (normal si no hubo interacción previa)
-                // No hacemos nada: el juego sigue funcionando sin sonido
-            });
-        }
+        const p = audio.play();
+        if (p !== undefined) p.catch(() => {}); // evita crash por autoplay policy
     } catch (_) {}
 };
 
-// ── Hook ──────────────────────────────────────────────────────
+// ── Hook ────────────────────────────────────────────────────────
 export const useGame = (gameId) => {
-    // Tablero 10×10 de nulls
-    const [board, setBoard] = useState(
-        () => Array(10).fill(null).map(() => Array(10).fill(null))
+    const [board, setBoard]       = useState(() =>
+        Array(10).fill(null).map(() => Array(10).fill(null))
     );
     const [message, setMessage]   = useState('');
     const [gameWon, setGameWon]   = useState(false);
-
-    // Lista de barcos hundidos: [{ type, size, positions:[{x,y}] }]
     const [sunkShips, setSunkShips] = useState([]);
+    //  sunkShips: [{ type, size, positions:[{x,y}] }]
 
-    // Ref para acceder al board actual dentro del callback sin stale closure
+    // Ref para leer el board actual dentro del callback sin stale closure
     const boardRef = useRef(board);
     boardRef.current = board;
 
     const shoot = useCallback(async (x, y) => {
         if (!gameId) return;
-        if (boardRef.current[y][x]) return; // celda ya disparada
+        if (boardRef.current[y]?.[x]) return; // celda ya disparada
 
         try {
             const { data } = await api.post(`/games/${gameId}/shoot`, { x, y });
 
-            // ── Actualizar tablero ────────────────────────────
+            // ── Actualizar tablero ──────────────────────────
             const newBoard = boardRef.current.map(row => [...row]);
             newBoard[y][x] = data.hit ? 'hit' : 'miss';
             setBoard(newBoard);
 
-            // ── Sonidos ───────────────────────────────────────
-            if (data.hit) {
-                playSound(HIT_SOUND);
-            } else {
-                playSound(MISS_SOUND);
-            }
+            // ── Sonidos ─────────────────────────────────────
+            playSound(data.hit ? hitSound : missSound);
 
-            // ── Mensajes ──────────────────────────────────────
-            if (data.game_won) {
-                setGameWon(true);
-                setMessage('🏆 ¡MISIÓN CUMPLIDA! Todos los barcos rescatados.');
-                return;
-            }
-
+            // ── Barco hundido completo ──────────────────────
             if (data.ship_sunk && data.sunk_ship) {
                 const { type, size, coordinates } = data.sunk_ship;
-                // Agregar a la lista de hundidos con formato que espera Board
                 setSunkShips(prev => [
                     ...prev,
-                    {
-                        type,
-                        size,
-                        positions: coordinates,  // [{x,y}, ...]
-                    }
+                    { type, size, positions: coordinates },
                 ]);
-                setMessage(`🚢 ¡${type} RESCATADO COMPLETAMENTE!`);
+                setMessage(`🚢 ¡${type} RESCATADO!`);
+                playSound(rescate);
             } else if (data.hit) {
                 setMessage(`💥 ¡Impacto en ${data.ship_found}!`);
             } else {
                 setMessage('💧 Agua... sigue intentando.');
             }
 
-        } catch (error) {
-            console.error('Error al disparar:', error);
+            // ── Victoria ────────────────────────────────────
+            if (data.game_won) {
+                setGameWon(true);
+                setMessage('🏆 ¡MISIÓN CUMPLIDA! Todos los barcos rescatados.');
+                playSound(winSound);
+            }
+
+        } catch (err) {
+            console.error('Error al disparar:', err);
             setMessage('⚠️ Error de conexión.');
         }
     }, [gameId]);
 
-    // Reset al cambiar de partida
     const resetGame = useCallback(() => {
-        const empty = Array(10).fill(null).map(() => Array(10).fill(null));
-        setBoard(empty);
+        setBoard(Array(10).fill(null).map(() => Array(10).fill(null)));
         setMessage('');
         setGameWon(false);
         setSunkShips([]);
