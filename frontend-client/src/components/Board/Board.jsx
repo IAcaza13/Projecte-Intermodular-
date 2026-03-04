@@ -1,43 +1,68 @@
 // src/components/Board/Board.jsx
 import React from 'react';
 
-// ── SVGs de los barcos (inline, coloreados dinámicamente) ─────
-const ShipSVG = ({ size, rescued }) => {
-    const accent = rescued ? '#22c55e' : '#3b82f6';
-    const hull   = rescued ? '#065f46' : '#1e3a6e';
-    const deck   = rescued ? '#14532d' : '#1d4ed8';
+// ── Importar SVGs reales desde assets/ships ───────────────────
+import destroyerSrc  from '../../assets/ships/destroyer.svg';
+import cruiserSrc    from '../../assets/ships/cruiser.svg';
+import submarineSrc  from '../../assets/ships/submarine.svg';
+import battleshipSrc from '../../assets/ships/battleship.svg';
+import carrierSrc    from '../../assets/ships/carrier.svg';
 
-    if (size <= 2) return (
-        <svg viewBox="0 0 40 40" fill="none" style={{ width:'100%', height:'100%' }}>
-            <rect x="3"  y="14" width="34" height="18" rx="4" fill={hull} stroke={accent} strokeWidth="1.5"/>
-            <rect x="8"  y="8"  width="22" height="10" rx="2" fill={deck}/>
-            <circle cx="19" cy="7" r="3.5" fill={accent} opacity="0.9"/>
-            {rescued && <circle cx="19" cy="7" r="7" fill={accent} opacity="0.25"/>}
-        </svg>
-    );
-    if (size === 3) return (
-        <svg viewBox="0 0 80 40" fill="none" style={{ width:'100%', height:'100%' }}>
-            <rect x="3"  y="14" width="74" height="20" rx="4" fill={hull} stroke={accent} strokeWidth="1.5"/>
-            <rect x="10" y="8"  width="22" height="10" rx="2" fill={deck}/>
-            <rect x="42" y="8"  width="22" height="10" rx="2" fill={deck}/>
-            <circle cx="21" cy="6" r="3.5" fill={rescued ? '#22c55e' : '#dc2626'} opacity="0.9"/>
-            <circle cx="53" cy="6" r="3.5" fill={rescued ? '#22c55e' : '#d97706'} opacity="0.9"/>
-            {rescued && <><circle cx="21" cy="6" r="7" fill={accent} opacity="0.2"/><circle cx="53" cy="6" r="7" fill={accent} opacity="0.2"/></>}
-        </svg>
-    );
+/**
+ * Elige el SVG correcto según type (string del backend) o size (número).
+ * type tiene prioridad para distinguir CRUISER vs SUBMARINE (ambos size 3).
+ *   CARRIER=5, BATTLESHIP=4, CRUISER=3, SUBMARINE=3, DESTROYER=2
+ */
+const SHIP_SRC = {
+    CARRIER:     carrierSrc,
+    BATTLESHIP:  battleshipSrc,
+    CRUISER:     cruiserSrc,
+    SUBMARINE:   submarineSrc,
+    DESTROYER:   destroyerSrc,
+};
+
+const getSrc = (type, size) => {
+    if (type) {
+        const src = SHIP_SRC[String(type).toUpperCase()];
+        if (src) return src;
+    }
+    // Fallback por tamaño si no hay type
+    if (size >= 5) return carrierSrc;
+    if (size === 4) return battleshipSrc;
+    if (size === 3) return cruiserSrc;
+    return destroyerSrc;
+};
+
+/**
+ * ShipSVG — renderiza la imagen real con filtro CSS para estado rescatado.
+ * - Normal (impactado pero barco incompleto): tono azulado
+ * - Rescued (barco completo): tono verde brillante
+ */
+const ShipSVG = ({ size, type, rescued }) => {
+    const src = getSrc(type, size);
+
+    const filter = rescued
+        // Verde vivo: invierte a negro, luego tono verde
+        ? 'brightness(0) saturate(100%) invert(62%) sepia(60%) saturate(500%) hue-rotate(95deg) brightness(1.1)'
+        // Azul marino suave para impactado sin hundir
+        : 'brightness(0) saturate(100%) invert(55%) sepia(40%) saturate(400%) hue-rotate(190deg) brightness(1.05)';
+
     return (
-        <svg viewBox="0 0 120 40" fill="none" style={{ width:'100%', height:'100%' }}>
-            <rect x="3"  y="14" width="114" height="20" rx="4" fill={hull} stroke={accent} strokeWidth="1.5"/>
-            <rect x="10" y="8"  width="20"  height="10" rx="2" fill={deck}/>
-            <rect x="42" y="8"  width="20"  height="10" rx="2" fill={deck}/>
-            <rect x="74" y="8"  width="20"  height="10" rx="2" fill={deck}/>
-            <circle cx="20" cy="6" r="3.5" fill={rescued ? '#22c55e' : '#dc2626'} opacity="0.9"/>
-            <circle cx="52" cy="6" r="3.5" fill={rescued ? '#22c55e' : '#d97706'} opacity="0.9"/>
-            <circle cx="84" cy="6" r="3.5" fill={rescued ? '#22c55e' : '#059669'} opacity="0.9"/>
-            <line x1="100" y1="6" x2="100" y2="22" stroke={accent} strokeWidth="1.5"/>
-            <path d="M100 6 L110 11 L100 16" fill={accent} opacity="0.8"/>
-            {rescued && <><circle cx="20" cy="6" r="7" fill={accent} opacity="0.2"/><circle cx="52" cy="6" r="7" fill={accent} opacity="0.2"/><circle cx="84" cy="6" r="7" fill={accent} opacity="0.2"/></>}
-        </svg>
+        <img
+            src={src}
+            alt={type || `ship-${size}`}
+            style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                filter,
+                transition: 'filter 0.3s ease',
+                // Al rescatar, añadir ligero glow verde via drop-shadow
+                ...(rescued && {
+                    filter: filter + ' drop-shadow(0 0 4px rgba(34,197,94,0.8))',
+                }),
+            }}
+        />
     );
 };
 
@@ -409,7 +434,7 @@ const RescueOverlay = ({ ship, onDone }) => {
 
             <div className="resc-badge">
                 <div className="resc-badge-ship">
-                    <ShipSVG size={ship.size} rescued={true}/>
+                    <ShipSVG size={ship.size} type={ship.type} rescued={true}/>
                 </div>
                 <div>
                     <div className="resc-badge-name">{name}</div>
@@ -518,8 +543,11 @@ export const Board = ({ board, onCellClick, ships = [], gameWon = false, onGameW
     const isRescuedCell = (x, y) =>
         ships.some(s => s.positions?.some(p => p.x === x && p.y === y));
 
+    const getShipAt = (x, y) =>
+        ships.find(s => s.positions?.some(p => p.x === x && p.y === y));
+
     const getShipSize = (x, y) => {
-        const s = ships.find(s => s.positions?.some(p => p.x === x && p.y === y));
+        const s = getShipAt(x, y);
         return s?.size || s?.positions?.length || 0;
     };
 
@@ -607,7 +635,9 @@ export const Board = ({ board, onCellClick, ships = [], gameWon = false, onGameW
                                 const isClick   = clicking?.x === x && clicking?.y === y;
                                 const isLast    = lastShot?.x === x && lastShot?.y === y && !!cell;
                                 const isRescued = cell === 'hit' && isRescuedCell(x, y);
-                                const shipSize  = getShipSize(x, y);
+                                const shipAt    = getShipAt(x, y);
+                                const shipSize  = shipAt?.size || shipAt?.positions?.length || 0;
+                                const shipType  = shipAt?.type || null;
 
                                 let cls = 'br-cell';
                                 if (!cell)          cls += ' br-cell--idle';
@@ -629,7 +659,7 @@ export const Board = ({ board, onCellClick, ships = [], gameWon = false, onGameW
 
                                         {cell === 'hit' && shipSize > 0 && (
                                             <div className="br-ship-img">
-                                                <ShipSVG size={shipSize} rescued={isRescued}/>
+                                                <ShipSVG size={shipSize} type={shipType} rescued={isRescued}/>
                                             </div>
                                         )}
                                         {cell === 'hit' && !shipSize && (

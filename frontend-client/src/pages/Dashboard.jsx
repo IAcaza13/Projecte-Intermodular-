@@ -89,15 +89,6 @@ export default function Dashboard() {
                         <p className="db-hero-sub">{'Que mision vamos a cumplir hoy?'}</p>
                     </div>
 
-                    <div className="db-stats">
-                        {[['\u2014','Partidas'],['\u2014','Victorias'],['\u2014','Ranking']].map(([n,l]) => (
-                            <div key={l} className="naval-stat">
-                                <div className="naval-stat-num">{n}</div>
-                                <div className="naval-stat-label">{l}</div>
-                            </div>
-                        ))}
-                    </div>
-
                     <div className="db-grid">
                         {menuItems.map(item => (
                             <Link key={item.to} to={item.to}

@@ -1,0 +1,21 @@
+<svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- CARRIER - 5 casillas (portaaviones) -->
+  <path d="M6 28 L20 18 L224 18 L244 28 L232 34 L14 34 Z" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <line x1="16" y1="28" x2="236" y2="28" stroke="#475569" stroke-width="0.4" opacity="0.4"/>
+  <path d="M16 18 L30 10 L220 10 L234 18 Z" fill="#334155" stroke="#475569" stroke-width="0.6"/>
+  <line x1="50" y1="14" x2="200" y2="14" stroke="#020617" stroke-width="0.5" opacity="0.3" stroke-dasharray="8 4"/>
+  <line x1="40" y1="12" x2="210" y2="12" stroke="#020617" stroke-width="0.3" opacity="0.2"/>
+  <rect x="155" y="2" width="20" height="8" rx="1.5" fill="#1e293b" stroke="#475569" stroke-width="0.6"/>
+  <rect x="160" y="-2" width="10" height="4" rx="1" fill="#0f172a"/>
+  <line x1="165" y1="-7" x2="165" y2="-2" stroke="#020617" stroke-width="0.8"/>
+  <line x1="161" y1="-5" x2="169" y2="-5" stroke="#020617" stroke-width="0.5"/>
+  <g opacity="0.35">
+    <path d="M55 13 L50 15 L60 15 Z" fill="#020617"/>
+    <line x1="52" y1="14" x2="58" y2="14" stroke="#020617" stroke-width="0.6"/>
+    <path d="M85 13 L80 15 L90 15 Z" fill="#020617"/>
+    <line x1="82" y1="14" x2="88" y2="14" stroke="#020617" stroke-width="0.6"/>
+    <path d="M115 13 L110 15 L120 15 Z" fill="#020617"/>
+    <line x1="112" y1="14" x2="118" y2="14" stroke="#020617" stroke-width="0.6"/>
+  </g>
+  <rect x="210" y="12" width="12" height="6" rx="0.5" fill="#0f172a" opacity="0.4"/>
+</svg>

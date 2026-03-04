@@ -14,8 +14,9 @@ class GameController extends Controller
     public function start(Request $request, BoardService $boardService)
     {
         $game = Game::create([
-            'user_id' => $request->user()->id,
-            'status'  => 'active',
+            'user_id'    => $request->user()->id,
+            'total_time' => 0,
+            'status'     => 'active',
         ]);
 
         $ships = $boardService->generateBoard();
@@ -41,7 +42,7 @@ class GameController extends Controller
         $x    = (int) $request->x;
         $y    = (int) $request->y;
 
-        // Buscar barco en esa posición comparando coordenadas
+        // Buscar barco en esa posición
         $allShips = Ship::where('game_id', $id)->get();
         $hitShip  = null;
 
@@ -57,7 +58,6 @@ class GameController extends Controller
 
         $isHit = $hitShip !== null;
 
-        // Registrar movimiento
         Move::create([
             'game_id' => $id,
             'x'       => $x,
@@ -70,7 +70,7 @@ class GameController extends Controller
             $game->increment('hits');
         }
 
-        // ── Detectar si el barco quedó hundido completo ──────
+        // ── Detectar barco hundido ───────────────────────────
         $shipSunk     = false;
         $sunkShipData = null;
 
@@ -87,15 +87,14 @@ class GameController extends Controller
                 $sunkShipData = [
                     'type'        => $hitShip->type,
                     'size'        => count($shipCoords),
-                    'coordinates' => $shipCoords,  // [{x, y}, ...]
+                    'coordinates' => $shipCoords,
                 ];
             }
         }
 
-        // ── Detectar si la partida está ganada ───────────────
+        // ── Detectar victoria ────────────────────────────────
         $gameWon = false;
         if ($shipSunk) {
-            // Recargar todos los barcos para comprobar estado
             $allShips = Ship::where('game_id', $id)->get();
             $allSunk  = true;
             foreach ($allShips as $s) {
@@ -106,8 +105,13 @@ class GameController extends Controller
                     break;
                 }
             }
+
             if ($allSunk) {
-                $game->status = 'won';
+                // Calcular segundos transcurridos desde created_at hasta ahora
+                $secondsElapsed = $game->created_at->diffInSeconds(now());
+
+                $game->status     = 'won';
+                $game->total_time = $secondsElapsed;
                 $game->save();
                 $gameWon = true;
             }
@@ -117,7 +121,7 @@ class GameController extends Controller
             'hit'        => $isHit,
             'ship_found' => $isHit ? $hitShip->type : null,
             'ship_sunk'  => $shipSunk,
-            'sunk_ship'  => $sunkShipData,   // null  o  { type, size, coordinates:[{x,y}] }
+            'sunk_ship'  => $sunkShipData,
             'game_won'   => $gameWon,
             'attempts'   => $game->fresh()->attempts,
         ]);

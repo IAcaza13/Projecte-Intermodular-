@@ -1,0 +1,14 @@
+<svg width="150" height="36" viewBox="0 0 150 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- CRUISER - 3 casillas -->
+  <path d="M4 24 L14 16 L130 16 L146 24 L138 30 L10 30 Z" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <line x1="10" y1="25" x2="140" y2="25" stroke="#475569" stroke-width="0.4" opacity="0.4"/>
+  <rect x="55" y="8" width="30" height="8" rx="1.5" fill="#334155" stroke="#475569" stroke-width="0.6"/>
+  <rect x="62" y="3" width="16" height="5" rx="1" fill="#1e293b"/>
+  <line x1="70" y1="-2" x2="70" y2="3" stroke="#020617" stroke-width="0.8"/>
+  <circle cx="70" cy="-3" r="1" fill="#020617"/>
+  <rect x="25" y="12" width="12" height="4" rx="1" fill="#1e293b"/>
+  <line x1="20" y1="14" x2="26" y2="14" stroke="#020617" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="100" y="12" width="12" height="4" rx="1" fill="#1e293b"/>
+  <line x1="111" y1="14" x2="118" y2="14" stroke="#020617" stroke-width="1.4" stroke-linecap="round"/>
+  <rect x="90" y="6" width="6" height="10" rx="1" fill="#0f172a"/>
+</svg>

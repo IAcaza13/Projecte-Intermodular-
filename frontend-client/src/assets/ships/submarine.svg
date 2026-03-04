@@ -1,0 +1,13 @@
+<svg width="150" height="32" viewBox="0 0 150 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- SUBMARINE - 3 casillas -->
+  <path d="M8 20 Q8 12, 20 12 L130 12 Q142 12, 142 20 Q142 26, 130 26 L20 26 Q8 26, 8 20 Z" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <rect x="58" y="4" width="24" height="8" rx="2" fill="#334155" stroke="#475569" stroke-width="0.7"/>
+  <line x1="70" y1="0" x2="70" y2="4" stroke="#020617" stroke-width="1.2"/>
+  <rect x="68" y="-1" width="4" height="2" rx="0.5" fill="#020617"/>
+  <path d="M136 16 L145 13 L145 19 Z" fill="#0f172a"/>
+  <path d="M136 22 L145 19 L145 25 Z" fill="#0f172a"/>
+  <ellipse cx="146" cy="19" rx="2" ry="4" fill="#475569" opacity="0.6"/>
+  <line x1="15" y1="19" x2="135" y2="19" stroke="#475569" stroke-width="0.4" opacity="0.4"/>
+  <circle cx="35" cy="19" r="2" fill="#0f172a" opacity="0.5"/>
+  <circle cx="105" cy="19" r="2" fill="#0f172a" opacity="0.5"/>
+</svg>

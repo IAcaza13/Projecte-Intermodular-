@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Board } from '../components/Board/Board';
 import { useGame } from '../hooks/useGame';
 import api from '../api/axiosConfig';
-import { navalBase, OceanBG, RadarDeco } from '../styles/navalTheme';
+import { navalBase, OceanBG, RadarDeco } from '../styles/Navaltheme';
 
 const styles = navalBase + `
   .game-start-wrap {
