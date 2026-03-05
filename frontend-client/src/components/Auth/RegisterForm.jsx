@@ -257,10 +257,6 @@ export const RegisterForm = () => {
                         </div>
                     </div>
 
-                    <div className="fleet-help">
-                        Ya eres parte de la flota?{' '}
-                        <Link to="/login" className="fleet-link">Inicia sesion</Link>
-                    </div>
                 </div>
 
                 <RadarDeco />

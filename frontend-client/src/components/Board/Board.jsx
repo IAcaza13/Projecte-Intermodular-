@@ -383,8 +383,8 @@ const STARS = [
 ];
 const CONFETTI_COLORS = ['#22c55e','#60a5fa','#eab308','#f97316','#a78bfa','#34d399'];
 
-// ── RescueOverlay ─────────────────────────────────────────────
-const RescueOverlay = ({ ship, onDone }) => {
+// ── RescueOverlay (también exportado para AIGamePage) ─────────
+export const RescueOverlay = ({ ship, onDone }) => {
     const [phase, setPhase] = React.useState('dropping');
     const name = SHIP_NAMES[ship.size] || 'BARCO';
 
@@ -445,8 +445,8 @@ const RescueOverlay = ({ ship, onDone }) => {
     );
 };
 
-// ── WinOverlay ────────────────────────────────────────────────
-const WinOverlay = ({ sunkShips, onRedirect }) => {
+// ── WinOverlay (también exportado para AIGamePage) ────────────
+export const WinOverlay = ({ sunkShips, onRedirect }) => {
     React.useEffect(() => {
         // Redirigir al ranking después de 5 segundos
         const t = setTimeout(() => onRedirect(), 5000);

@@ -210,7 +210,6 @@ export const LoginForm = () => {
                                         <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)}/>
                                         Recordarme
                                     </label>
-                                    <a href="#" className="fleet-forgot">Olvidaste tu contrasena?</a>
                                 </div>
 
                                 <button type="submit" className="fleet-btn" disabled={loading}>

@@ -1,7 +1,8 @@
 // src/pages/RankingPage.jsx
 import { useEffect, useState } from 'react';
 import api from '../api/axiosConfig';
-import { navalBase, OceanBG, RadarDeco } from '../styles/Navaltheme';
+import { Link } from 'react-router-dom';
+import { navalBase, OceanBG, RadarDeco, ThemeToggleBtn } from '../styles/Navaltheme';
 import { Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS, CategoryScale, LinearScale,
@@ -57,10 +58,11 @@ const MEDALS   = { 1: '🥇', 2: '🥈', 3: '🥉' };
 const POS_CLS  = { 1: 'rank-pos--1', 2: 'rank-pos--2', 3: 'rank-pos--3' };
 
 const formatTime = (seconds) => {
-    if (!seconds || seconds === 0) return '—';
+    if (seconds === null || seconds === undefined) return '—';
+    if (seconds === 0) return '—';          // partida sin tiempo registrado
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return m > 0 ? `${m}m ${s}s` : `${s}s`;
+    return m > 0 ? `${m}m ${String(s).padStart(2,'0')}s` : `${s}s`;
 };
 
 const getChartOptions = () => {
@@ -129,6 +131,22 @@ export default function RankingPage() {
             <style>{styles}</style>
             <div className="naval-page">
                 <OceanBG />
+
+                <nav className="naval-nav">
+                    <div className="naval-nav-brand">
+                        <div className="naval-nav-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h1 className="naval-nav-title">Fleet <span>Rescue</span></h1>
+                    </div>
+                    <div className="naval-nav-right">
+                        <ThemeToggleBtn />
+                        <Link to="/dashboard" className="naval-nav-back">← Inicio</Link>
+                    </div>
+                </nav>
 
                 <main className="naval-main">
                     {loading ? (

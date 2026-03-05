@@ -1,405 +1,233 @@
-// src/styles/Navaltheme.jsx
 // ─────────────────────────────────────────────────────────────
-//  Estilos y componentes compartidos por todas las páginas con soporte para tema claro/oscuro
+//  src/styles/Navaltheme.jsx
+//  Estilos y componentes compartidos por todas las páginas.
+//  Uso:
+//    import { navalBase, OceanBG, ShipSVG, RadarDeco } from '../styles/navalTheme';
 // ─────────────────────────────────────────────────────────────
 
-// ── Variables CSS para temas ─────────────────────────────────
-export const themeVariables = `
-  :root {
-    /* Tema oscuro (default) - Tonos azules oscuros */
-    --bg-primary: #05080f;
-    --bg-secondary: #0a1424;
-    --bg-card: rgba(8, 14, 28, 0.95);
-    --bg-nav: rgba(5, 8, 15, 0.95);
-    --text-primary: #ffffff;
-    --text-secondary: #e2e8f0;
-    --text-muted: #94a3b8;
-    --text-dim: #64748b;
-    --border-color: rgba(37, 99, 235, 0.3);
-    --border-hover: rgba(59, 130, 246, 0.6);
-    --accent-primary: #2563eb;
-    --accent-secondary: #3b82f6;
-    --accent-glow: rgba(37, 99, 235, 0.3);
-    --ocean-deep: #0a1424;
-    --ocean-surface: #1e293b;
-  }
+import { Link } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
 
-  :root[data-theme="light"] {
-    /* Tema claro - Tonos azules claros y blancos */
-    --bg-primary: #e8f0fe;
-    --bg-secondary: #ffffff;
-    --bg-card: rgba(255, 255, 255, 0.95);
-    --bg-nav: rgba(255, 255, 255, 0.95);
-    --text-primary: #0a1424;
-    --text-secondary: #1e293b;
-    --text-muted: #334155;
-    --text-dim: #475569;
-    --border-color: rgba(37, 99, 235, 0.2);
-    --border-hover: rgba(37, 99, 235, 0.4);
-    --accent-primary: #2563eb;
-    --accent-secondary: #3b82f6;
-    --accent-glow: rgba(37, 99, 235, 0.15);
-    --ocean-deep: #b8d1f0;
-    --ocean-surface: #90b4e6;
-  }
-`;
-
-// ── CSS base compartido con variables ────────────────────────
+// ── CSS base compartido ──────────────────────────────────────
 export const navalBase = `
   @import url('https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700');
 
-  * {
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.2s ease;
+  /* ══ VARIABLES DE TEMA ══════════════════════════════════════
+     Modo oscuro (default) */
+  :root {
+    --page-bg:#05080f; --page-grid:rgba(59,130,246,0.055); --page-color:#f9fafb;
+    --bg-card:rgba(8,14,28,0.92); --bg-row:rgba(5,10,22,0.7); --bg-row-hover:rgba(10,20,45,0.85);
+    --border-color:rgba(37,99,235,0.22); --border-hover:rgba(96,165,250,0.5);
+    --text-primary:#f9fafb; --text-secondary:#e2e8f0; --text-muted:#9ca3af; --text-dim:#6b7280;
+    --accent-primary:#2563eb; --accent-secondary:#60a5fa; --accent-glow:rgba(37,99,235,0.25);
+    --card-shadow-hover:0 16px 40px rgba(0,0,0,0.55),0 0 28px rgba(37,99,235,0.2);
+    --nav-bg:rgba(5,8,15,0.9); --nav-border:rgba(37,99,235,0.25);
+    --ocean-back:#0c2040; --ocean-front:#060e1e;
+    --chart-tick:#6b7280; --chart-grid:rgba(37,99,235,0.08);
+    --tooltip-bg:rgba(8,14,28,0.95); --tooltip-text:#e2e8f0;
+    --toggle-bg:rgba(37,99,235,0.15); --toggle-border:rgba(37,99,235,0.3); --toggle-color:#60a5fa;
   }
+
+  /* Modo claro */
+  .theme-light {
+    --page-bg:#eef2ff; --page-grid:rgba(37,99,235,0.06); --page-color:#0f172a;
+    --bg-card:rgba(255,255,255,0.94); --bg-row:rgba(238,242,255,0.8); --bg-row-hover:rgba(220,228,255,0.9);
+    --border-color:rgba(37,99,235,0.18); --border-hover:rgba(37,99,235,0.5);
+    --text-primary:#0f172a; --text-secondary:#1e293b; --text-muted:#475569; --text-dim:#64748b;
+    --accent-primary:#2563eb; --accent-secondary:#1d4ed8; --accent-glow:rgba(37,99,235,0.15);
+    --card-shadow-hover:0 12px 32px rgba(37,99,235,0.15),0 0 20px rgba(37,99,235,0.1);
+    --nav-bg:rgba(255,255,255,0.94); --nav-border:rgba(37,99,235,0.2);
+    --ocean-back:#bfdbfe; --ocean-front:#93c5fd;
+    --chart-tick:#475569; --chart-grid:rgba(37,99,235,0.1);
+    --tooltip-bg:rgba(255,255,255,0.98); --tooltip-text:#1e293b;
+    --toggle-bg:rgba(37,99,235,0.08); --toggle-border:rgba(37,99,235,0.25); --toggle-color:#1d4ed8;
+  }
+  /* ══════════════════════════════════════════════════════════ */
 
   /* Keyframes */
   @keyframes ocean-scroll  { 0%{transform:translateX(0)}    100%{transform:translateX(-50%)} }
   @keyframes ocean-scroll2 { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
-  @keyframes ship-bob      { 0%,100%{transform:translateY(0px) rotate(-0.8deg)} 50%{transform:translateY(-8px) rotate(0.8deg)} }
+  @keyframes ship-bob      { 0%,100%{transform:translateY(0px) rotate(-0.8deg)} 50%{transform:translateY(-10px) rotate(0.8deg)} }
   @keyframes ship-enter    { from{opacity:0;transform:translateX(-80px)} to{opacity:1;transform:translateX(0)} }
   @keyframes fadeInUp      { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
   @keyframes ping-slow     { 75%,100%{transform:scale(1.5);opacity:0} }
   @keyframes bar-slide     { 0%{background-position:0% 0} 100%{background-position:200% 0} }
-  @keyframes glow-pulse    { 0%,100%{text-shadow:0 0 15px var(--accent-glow)} 50%{text-shadow:0 0 30px var(--accent-secondary)} }
+  @keyframes glow-pulse    { 0%,100%{text-shadow:0 0 20px rgba(96,165,250,0.4)} 50%{text-shadow:0 0 40px rgba(96,165,250,0.9),0 0 80px rgba(37,99,235,0.3)} }
   @keyframes spin          { to{transform:rotate(360deg)} }
 
   /* Página base */
   .naval-page {
     font-family:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
-    min-height:100vh; 
-    background: var(--bg-primary); 
-    color: var(--text-primary);
-    position:relative; 
-    overflow-x:hidden;
-    display:flex; 
-    flex-direction:column;
+    min-height:100vh; background:var(--page-bg); color:var(--page-color);
+    position:relative; overflow-x:hidden;
+    display:flex; flex-direction:column;
+    transition:background 0.3s,color 0.3s;
   }
-
-  /* Grid decorativo de fondo */
   .naval-page::before {
-    content:''; 
-    position:fixed; 
-    inset:0;
+    content:''; position:fixed; inset:0;
     background-image:
-      linear-gradient(var(--accent-secondary) 0.5px, transparent 0.5px),
-      linear-gradient(90deg, var(--accent-secondary) 0.5px, transparent 0.5px);
-    background-size:40px 40px; 
-    opacity: 0.08; 
-    pointer-events:none; 
-    z-index:0;
+      linear-gradient(var(--page-grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--page-grid) 1px,transparent 1px);
+    background-size:44px 44px; pointer-events:none; z-index:0;
   }
 
-  /* Mar */
+  /* Ocean */
   .naval-ocean {
-    position:fixed; 
-    bottom:0; 
-    left:0; 
-    width:100%; 
-    height:180px;
-    pointer-events:none; 
-    z-index:1; 
-    overflow:hidden;
+    position:fixed; bottom:0; left:0; width:100%; height:200px;
+    pointer-events:none; z-index:1; overflow:hidden;
   }
+  .ocean-track { position:absolute; bottom:0; left:0; width:200%; height:100%; display:flex; }
+  .ocean-track svg { flex-shrink:0; width:50%; height:100%; }
+  .ocean-track--front { animation:ocean-scroll 18s linear infinite; }
+  .ocean-track--back  { animation:ocean-scroll2 11s linear infinite; opacity:0.4; }
 
-  .ocean-track {
-    position:absolute; 
-    bottom:0; 
-    left:0; 
-    width:200%; 
-    height:100%; 
-    display:flex;
-  }
-
-  .ocean-track svg {
-    flex-shrink:0; 
-    width:50%; 
-    height:100%;
-  }
-
-  .ocean-track--front { 
-    animation:ocean-scroll 22s linear infinite; 
-    opacity:0.9;
-  }
-
-  .ocean-track--back { 
-    animation:ocean-scroll2 15s linear infinite; 
-    opacity:0.4;
-  }
-
-  /* Barco flotante */
+  /* Ship flotando sobre el mar */
   .naval-ship-scene {
-    position:fixed; 
-    bottom:140px; 
-    left:50%; 
-    transform:translateX(-50%);
-    z-index:2; 
-    pointer-events:none;
+    position:fixed; bottom:152px; left:50%; transform:translateX(-50%);
+    z-index:2; pointer-events:none;
     animation:ship-bob 5s ease-in-out infinite, ship-enter 1s ease-out both;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-    opacity:0.9;
   }
 
-  [data-theme="light"] .naval-ship-scene {
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.15));
-    opacity:1;
-  }
-
-  /* Navbar */
+  /* Navbar compartido */
   .naval-nav {
-    position:relative; 
-    z-index:20;
-    display:flex; 
-    align-items:center; 
-    justify-content:space-between;
-    padding:0.75rem 2rem;
-    background: var(--bg-nav);
-    backdrop-filter:blur(10px);
-    border-bottom:2px solid var(--accent-primary);
-    box-shadow:0 2px 15px rgba(0,0,0,0.2);
+    position:relative; z-index:20;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem 2rem;
+    background:var(--nav-bg); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--nav-border);
+    transition:background 0.3s;
+    box-shadow:0 2px 20px rgba(0,0,0,0.4);
   }
-
-  .naval-nav-brand { 
-    display:flex; 
-    align-items:center; 
-    gap:0.75rem; 
-    text-decoration:none; 
-  }
-
+  .naval-nav-brand { display:flex; align-items:center; gap:0.6rem; cursor:pointer; }
   .naval-nav-icon {
-    display:flex; 
-    align-items:center; 
-    justify-content:center;
-    width:38px; 
-    height:38px; 
-    background: var(--accent-primary); 
-    border-radius:8px;
-    box-shadow:0 0 12px var(--accent-glow); 
-    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    width:40px; height:40px; background:#2563eb; border-radius:10px;
+    box-shadow:0 0 16px rgba(37,99,235,0.4); flex-shrink:0;
   }
-
-  .naval-nav-icon svg {
-    width:20px;
-    height:20px;
-    stroke: white;
-  }
-
   .naval-nav-title {
-    font-size:1.3rem; 
-    font-weight:900; 
-    letter-spacing:-0.03em;
-    text-transform:uppercase; 
-    font-style:italic; 
-    color: var(--accent-secondary); 
-    margin:0;
+    font-size:1.35rem; font-weight:900; letter-spacing:-0.04em;
+    text-transform:uppercase; font-style:italic; color:#60a5fa; margin:0;
   }
-
-  .naval-nav-title span { 
-    color: var(--text-primary); 
-  }
-
-  .naval-nav-right { 
-    display:flex; 
-    align-items:center; 
-    gap:1.25rem; 
-  }
-
-  .naval-user-name {
-    font-size:0.9rem;
-    color: var(--text-muted);
-  }
-
-  .naval-user-name strong {
-    color: var(--accent-secondary);
-    font-weight:600;
-  }
-
+  .naval-nav-title span { color:var(--text-primary); }
+  .naval-nav-right { display:flex; align-items:center; gap:1rem; }
   .naval-nav-back {
-    display:flex; 
-    align-items:center; 
-    gap:0.3rem;
-    color: var(--text-muted); 
-    text-decoration:none; 
-    font-size:0.9rem;
-    font-weight:500;
+    display:flex; align-items:center; gap:0.4rem;
+    color:var(--text-muted); text-decoration:none; font-size:0.875rem;
     transition:color 0.2s;
-    padding:0.3rem 0.8rem;
-    border-radius:6px;
-    background: var(--bg-card);
-    border:1px solid var(--border-color);
   }
+  .naval-nav-back:hover { color:var(--accent-secondary); }
 
-  .naval-nav-back:hover { 
-    color: var(--accent-secondary);
-    border-color: var(--accent-secondary);
-    background: var(--bg-secondary);
-  }
-
-  /* Contenedor principal */
+  /* Contenedor principal de cada página */
   .naval-main {
-    position:relative; 
-    z-index:10; 
-    flex:1;
-    display:flex; 
-    flex-direction:column; 
-    align-items:center;
-    padding:2rem 1.5rem 10rem;
-    width:100%; 
-    max-width:1200px;
-    margin:0 auto;
-    box-sizing:border-box;
+    position:relative; z-index:10; flex:1;
+    display:flex; flex-direction:column; align-items:center;
+    padding:2.5rem 1.5rem 13rem;
+    width:100%; box-sizing:border-box;
   }
 
-  /* Títulos */
+  /* Títulos de sección */
   .naval-section-title {
-    font-size:clamp(1.6rem,4vw,2.3rem); 
-    font-weight:900;
-    letter-spacing:-0.03em; 
-    color: var(--text-primary); 
-    margin:0 0 0.3rem; 
-    text-align:center;
+    font-size:clamp(1.5rem,3.5vw,2.25rem); font-weight:900;
+    letter-spacing:-0.04em; color:#fff; margin:0 0 0.4rem; text-align:center;
+    animation:glow-pulse 3s ease-in-out infinite;
   }
+  .naval-section-title span { color:#60a5fa; }
+  .naval-section-sub { color:var(--text-muted); font-size:0.9rem; text-align:center; margin:0 0 2rem; }
 
-  .naval-section-title span { 
-    color: var(--accent-secondary); 
-  }
-
-  .naval-section-sub { 
-    color: var(--text-muted); 
-    font-size:0.95rem; 
-    text-align:center; 
-    margin:0 0 2rem; 
-  }
-
-  /* Cards */
+  /* Card base reutilizable */
   .naval-card {
-    background: var(--bg-card); 
-    backdrop-filter:blur(8px);
-    border:1px solid var(--border-color); 
-    border-radius:1rem;
-    transition:all 0.25s ease; 
-    overflow:hidden;
+    background:var(--bg-card); backdrop-filter:blur(12px);
+    border:1px solid var(--border-color); border-radius:1rem;
+    transition:all 0.25s ease; position:relative; overflow:hidden;
   }
-
   .naval-card:hover {
-    border-color: var(--accent-secondary); 
-    transform:translateY(-3px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    border-color:var(--border-hover); transform:translateY(-4px);
+    box-shadow:var(--card-shadow-hover);
   }
-
   .naval-card-bar {
     height:3px;
-    background:linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-primary));
-    background-size:200% 100%; 
-    animation:bar-slide 3s linear infinite;
+    background:linear-gradient(90deg,#1d4ed8,#60a5fa,#1d4ed8);
+    background-size:200% 100%; animation:bar-slide 3s linear infinite;
   }
 
-  /* Stats */
+  /* Stat pill */
   .naval-stat {
-    background: var(--bg-card); 
-    border:1px solid var(--border-color);
-    border-radius:0.75rem; 
-    padding:0.8rem 1.2rem; 
-    text-align:center;
-    min-width:85px; 
+    background:var(--bg-card); border:1px solid var(--border-color);
+    border-radius:0.875rem; padding:1rem 1.5rem; text-align:center;
+    min-width:90px; backdrop-filter:blur(8px);
   }
+  .naval-stat-num   { font-size:1.75rem; font-weight:900; color:var(--accent-secondary); line-height:1; }
+  .naval-stat-label { font-size:0.7rem; color:var(--text-dim); margin-top:0.2rem; text-transform:uppercase; letter-spacing:0.06em; }
 
-  .naval-stat-num { 
-    font-size:1.6rem; 
-    font-weight:900; 
-    color: var(--accent-secondary); 
-    line-height:1; 
-  }
-
-  .naval-stat-label { 
-    font-size:0.65rem; 
-    color: var(--text-dim); 
-    margin-top:0.2rem; 
-    text-transform:uppercase; 
-    letter-spacing:0.05em; 
-  }
-
-  /* Spinner */
+  /* Spinner de carga */
   .naval-spinner {
-    width:45px; 
-    height:45px;
-    border:3px solid var(--border-color); 
-    border-top-color: var(--accent-primary);
-    border-radius:50%; 
-    animation:spin 0.8s linear infinite; 
+    width:48px; height:48px;
+    border:3px solid rgba(37,99,235,0.2); border-top-color:#3b82f6;
+    border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto;
   }
 
   /* Radar decorativo */
   .naval-radar {
-    position:fixed; 
-    bottom:1rem; 
-    right:1rem;
-    width:65px; 
-    height:65px; 
-    opacity:0.15; 
-    pointer-events:none; 
-    z-index:5;
+    position:fixed; bottom:1.25rem; right:1.25rem;
+    width:72px; height:72px; opacity:0.18; pointer-events:none; z-index:5;
   }
-
   .naval-radar-ring {
-    position:absolute; 
-    inset:0; 
-    border:1.5px solid var(--accent-secondary); 
-    border-radius:50%;
+    position:absolute; inset:0; border:2px solid #3b82f6; border-radius:50%;
     animation:ping-slow 3s cubic-bezier(0,0,0.2,1) infinite;
   }
+  .naval-radar-ring:nth-child(2) { inset:8px;  border-color:#60a5fa; animation-delay:0.5s; }
+  .naval-radar-ring:nth-child(3) { inset:16px; border-color:#93c5fd; animation-delay:1s; }
 
-  .naval-radar-ring:nth-child(2) { 
-    inset:7px;  
-    border-color: var(--accent-primary); 
-    animation-delay:0.5s; 
-  }
-
-  .naval-radar-ring:nth-child(3) { 
-    inset:14px; 
-    border-color: var(--text-muted); 
-    animation-delay:1s; 
-  }
-
-  @media(max-width:640px){
-    .naval-main { padding:1.5rem 1rem 8rem; }
-    .naval-nav  { padding:0.75rem 1rem; }
-    .naval-nav-right { gap:0.75rem; }
-    .naval-user-name { display:none; }
+  @media(max-width:480px){
+    .naval-main { padding:2rem 1rem 12rem; }
+    .naval-nav  { padding:0.875rem 1rem; }
   }
 `;
 
-// ── Componente: Barco SVG ────────────────────────────────
-export const ShipSVG = ({ width = 200, height = 70 }) => (
-    <svg width={width} height={height} viewBox="0 0 200 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 50 L32 35 L168 35 L185 50 L172 62 L28 62 Z" fill="var(--accent-primary)" stroke="var(--accent-secondary)" strokeWidth="1.5" opacity="0.9"/>
-        <rect x="58" y="22" width="62" height="14" rx="3" fill="var(--accent-primary)" stroke="var(--accent-secondary)" strokeWidth="1"/>
-        <rect x="78" y="10" width="32" height="12" rx="2" fill="var(--accent-secondary)" stroke="#93c5fd" strokeWidth="1"/>
-        <rect x="94" y="3" width="9" height="9" rx="1" fill="#172554" stroke="var(--accent-secondary)" strokeWidth="1"/>
-        <circle cx="98" cy="1.5" r="3" fill="#1e293b" opacity="0.6"/>
-        <circle cx="102" cy="12" r="2.5" fill="white" opacity="0.8"/>
-        <circle cx="115" cy="12" r="2.5" fill="white" opacity="0.8"/>
+// ── Componente: Barco SVG ────────────────────────────────────
+export const ShipSVG = ({ width = 220, height = 78 }) => (
+    <svg width={width} height={height} viewBox="0 0 220 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 55 L36 40 L184 40 L202 55 L188 68 L32 68 Z" fill="#1e3a6e" stroke="#3b82f6" strokeWidth="1.5"/>
+        <rect x="65" y="25" width="68" height="15" rx="3" fill="#1d4ed8" stroke="#60a5fa" strokeWidth="1"/>
+        <rect x="85" y="12" width="36" height="14" rx="2" fill="#2563eb" stroke="#93c5fd" strokeWidth="1"/>
+        <rect x="104" y="4"  width="10" height="11" rx="1" fill="#172554" stroke="#60a5fa" strokeWidth="1"/>
+        <circle cx="109" cy="2"  r="4"   fill="#1e293b" opacity="0.7"/>
+        <circle cx="104" cy="-2" r="2.8" fill="#1e293b" opacity="0.45"/>
+        <line x1="96" y1="12" x2="96" y2="2"  stroke="#93c5fd" strokeWidth="1.5"/>
+        <line x1="96" y1="4"  x2="114" y2="7" stroke="#93c5fd" strokeWidth="1"/>
+        <circle cx="90"  cy="32" r="3.5" fill="#bfdbfe" opacity="0.9"/>
+        <circle cx="103" cy="32" r="3.5" fill="#bfdbfe" opacity="0.9"/>
+        <circle cx="116" cy="32" r="3.5" fill="#bfdbfe" opacity="0.7"/>
+        <rect x="176" y="44" width="30" height="5" rx="2" fill="#1e3a6e" stroke="#3b82f6" strokeWidth="1"/>
+        <line x1="32" y1="64" x2="188" y2="64" stroke="#60a5fa" strokeWidth="1" opacity="0.3"/>
+        <path d="M40 70 Q110 75 180 70" stroke="#3b82f6" strokeWidth="2" fill="none" opacity="0.22"/>
     </svg>
 );
 
-// ── Componente: Mar animado ──────────────────────────────────
-const WaveShape = ({ className }) => (
-    <svg viewBox="0 0 1200 100" preserveAspectRatio="none" className={className}>
-        <path d="M0,50 C200,80 400,20 600,50 C800,80 1000,20 1200,50 L1200,100 L0,100 Z" fill="currentColor"/>
-    </svg>
+// ── Componente: Mar animado (reactivo al tema) ───────────────
+const WaveShape = ({ color }) => (
+    <path d="M0,60 C200,110 400,10 600,60 C800,110 1000,10 1200,60 L1200,120 L0,120 Z" fill={color}/>
 );
 
-export const OceanBG = () => (
-    <div className="naval-ocean">
-        <div className="ocean-track ocean-track--back" style={{color: 'var(--ocean-deep)'}}>
-            <WaveShape />
-            <WaveShape />
+export const OceanBG = () => {
+    const getVar = (v) => typeof window !== 'undefined'
+        ? (getComputedStyle(document.documentElement).getPropertyValue(v).trim() || null)
+        : null;
+    const back  = getVar('--ocean-back')  || '#0c2040';
+    const front = getVar('--ocean-front') || '#060e1e';
+    return (
+        <div className="naval-ocean">
+            <div className="ocean-track ocean-track--back">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><WaveShape color={back}/></svg>
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><WaveShape color={back}/></svg>
+            </div>
+            <div className="ocean-track ocean-track--front">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><WaveShape color={front}/></svg>
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><WaveShape color={front}/></svg>
+            </div>
         </div>
-        <div className="ocean-track ocean-track--front" style={{color: 'var(--ocean-surface)'}}>
-            <WaveShape />
-            <WaveShape />
-        </div>
-    </div>
-);
+    );
+};
 
 // ── Componente: Radar decorativo ─────────────────────────────
 export const RadarDeco = () => (
@@ -408,4 +236,46 @@ export const RadarDeco = () => (
         <div className="naval-radar-ring"/>
         <div className="naval-radar-ring"/>
     </div>
+);
+
+// ── imports ──────────────────────────────────────────────────
+
+// ── Componente: Botón de tema ─────────────────────────────────
+export const ThemeToggleBtn = () => {
+    const { theme, toggleTheme } = useTheme();
+    const isDark = theme === 'dark';
+    return (
+        <button
+            onClick={toggleTheme}
+            title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            style={{
+                display:'flex', alignItems:'center', justifyContent:'center',
+                width:'36px', height:'36px', borderRadius:'8px', border:'none',
+                background:'var(--toggle-bg)', cursor:'pointer',
+                outline:'1px solid var(--toggle-border)', transition:'all 0.2s',
+                fontSize:'1.1rem', flexShrink:0,
+            }}
+        >
+            {isDark ? '☀️' : '🌙'}
+        </button>
+    );
+};
+
+// ── Componente: Navbar compartido ────────────────────────────
+export const NavalNavbar = ({ rightSlot = null }) => (
+    <nav className="naval-nav">
+        <Link to="/dashboard" className="naval-nav-brand" style={{ textDecoration:'none' }}>
+            <div className="naval-nav-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                    fill="none" stroke="white" strokeWidth="2.2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <h1 className="naval-nav-title">Fleet <span>Rescue</span></h1>
+        </Link>
+        <div className="naval-nav-right">
+            <ThemeToggleBtn />
+            {rightSlot}
+        </div>
+    </nav>
 );

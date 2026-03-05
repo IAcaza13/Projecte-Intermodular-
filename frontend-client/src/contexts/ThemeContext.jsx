@@ -4,34 +4,30 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const [isDark, setIsDark] = useState(() => {
-        const saved = localStorage.getItem('theme');
-        return saved ? saved === 'dark' : true;
-    });
+    const [theme, setTheme] = useState(
+        () => localStorage.getItem('fleet-theme') || 'dark'
+    );
 
     useEffect(() => {
-        const theme = isDark ? 'dark' : 'light';
-        localStorage.setItem('theme', theme);
-        document.documentElement.setAttribute('data-theme', theme);
-        
-        if (isDark) {
-            document.documentElement.classList.add('dark');
+        const root = document.documentElement;
+        // Aplica la clase al <html> para que las variables CSS funcionen en toda la app
+        if (theme === 'light') {
+            root.classList.add('theme-light');
+            root.classList.remove('theme-dark');
         } else {
-            document.documentElement.classList.remove('dark');
+            root.classList.add('theme-dark');
+            root.classList.remove('theme-light');
         }
-    }, [isDark]);
+        localStorage.setItem('fleet-theme', theme);
+    }, [theme]);
 
-    const toggleTheme = () => setIsDark(prev => !prev);
+    const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
 
     return (
-        <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );
 };
 
-export const useTheme = () => {
-    const context = useContext(ThemeContext);
-    if (!context) throw new Error('useTheme must be used within ThemeProvider');
-    return context;
-};
+export const useTheme = () => useContext(ThemeContext);
